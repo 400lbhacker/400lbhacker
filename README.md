@@ -1,4 +1,4 @@
-<h1 align="center">⚠️ 404 | MEDIA ⚠️</h1>
+<h1 align="center">⚠️ 400SUPERHACKER ⚠️</h1>
 
 <p align="center">
 <em>signal > noise • exploit culture • adversarial journalism</em>
