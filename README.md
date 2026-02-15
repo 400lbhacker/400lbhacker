@@ -42,6 +42,16 @@ I build tools, write code, and break systems — mostly to understand them.
 
 ---
 
+#### 🧬 Featured Project — RAZORWIRE-LIVE
+
+> Live Binary Analysis • Behavioral Signal Scoring • AI-Assisted Forensics  
+> radare2 + Local LLM reasoning inside Google Colab.
+
+[![Project Repo](https://img.shields.io/badge/View-RAZORWIRE--LIVE-black?style=flat-square&logo=github&logoColor=white)](https://github.com/400lbhacker/RAZORWIRE-LIVE)
+[![Open In Colab](https://img.shields.io/badge/Open%20in-Colab-black?style=flat-square&logo=googlecolab&logoColor=orange)](https://colab.research.google.com/github/400lbhacker/RAZORWIRE-LIVE/blob/main/RAZORWIRE_LIVE.ipynb)
+
+---
+
 ### Research / AI / Tradecraft
 ![HuggingFace](https://img.shields.io/badge/HuggingFace-black?style=flat-square&logo=huggingface&logoColor=yellow)
 ![Polyglot%20Models](https://img.shields.io/badge/Polyglot%20Models-black?style=flat-square&logo=tensorflow&logoColor=orange)
@@ -52,7 +62,7 @@ I build tools, write code, and break systems — mostly to understand them.
 ### 📡 Contact
 - 🔗 LinkedIn
 - 🐦 Twitter
-- ✉️ Email
+- ✉️ Email: josepherickson135@gmail.com
 
 ---
 
