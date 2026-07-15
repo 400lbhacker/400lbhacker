@@ -15,7 +15,7 @@ I build tools, write code, and break systems — mostly to understand them.
 
 # Binary Atlas
 
-![screenshot](screenshot.jpg)
+![screenshot](binaryatlas.jpg)
 
 <p align="center">
   <strong>Interactive Binary Intelligence Platform</strong><br>
