@@ -435,6 +435,439 @@ Future directions include:
 
 ---
 
+# 🧬 RNAverse
+
+<p align="center">
+  <img src="rnaverse.jpg" width="100%" alt="RNAverse Screenshot">
+</p>
+
+<p align="center">
+<b>An interactive RNA secondary structure platform for visualization, analysis, mutation, and AI-assisted interpretation.</b><br>
+RNA folding • Structural visualization • Motif discovery • Mutation simulation • Long RNA support
+</p>
+
+<p align="center">
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-black?style=flat-square&logo=flask)
+![ViennaRNA](https://img.shields.io/badge/ViennaRNA-RNAfold-success?style=flat-square)
+![RNAplot](https://img.shields.io/badge/RNAplot-Coordinates-blue?style=flat-square)
+![RNAplfold](https://img.shields.io/badge/RNAplfold-Long%20RNA-purple?style=flat-square)
+![TinyLlama](https://img.shields.io/badge/TinyLlama-1.1B-orange?style=flat-square)
+![D3.js](https://img.shields.io/badge/D3.js-Interactive-F9A03C?style=flat-square&logo=d3.js&logoColor=white)
+![HuggingFace](https://img.shields.io/badge/HuggingFace-Spaces-FFD21E?style=flat-square&logo=huggingface&logoColor=black)
+
+</p>
+
+---
+
+# 🧬 Overview
+
+**RNAverse** is an interactive RNA secondary structure platform built to make RNA folding intuitive, explorable, and biologically meaningful.
+
+Most RNA software either produces beautiful static figures or powerful command-line output—but rarely both. RNAverse combines the predictive power of the **ViennaRNA** toolkit with an interactive web interface that allows users to explore RNA structures at nucleotide resolution, inspect motifs, simulate mutations, and investigate structural stability in real time.
+
+Whether you're studying **microRNAs**, **viral genomes**, **tRNAs**, **long non-coding RNAs**, or synthetic constructs, RNAverse provides a visual environment for understanding how sequence becomes structure.
+
+---
+
+# ✨ Features
+
+## 🧬 Dual Folding Engine
+
+RNAverse automatically selects the most appropriate folding algorithm based on sequence length.
+
+For conventional RNA molecules:
+
+- ViennaRNA RNAfold
+- Minimum Free Energy (MFE) prediction
+- Thermodynamic optimization
+
+For extremely large RNAs:
+
+- RNAplfold
+- Sliding-window folding
+- Local pairing probabilities
+- Long transcript support
+
+Automatic fallback chain:
+
+```
+RNAplfold
+      ↓
+RNAfold
+      ↓
+Internal topology-aware layout engine
+```
+
+allowing everything from small miRNAs to complete viral genomes to be analyzed seamlessly.
+
+---
+
+## 🎨 Interactive Secondary Structure Visualization
+
+Rather than rendering RNA as static SVG figures, RNAverse represents every nucleotide as a fully interactive graph.
+
+Features include
+
+- nucleotide-level precision
+- zoomable graph visualization
+- draggable layouts
+- backbone visualization
+- base-pair visualization
+- publication-quality rendering
+
+The visualization remains responsive even for very large RNA molecules.
+
+---
+
+## 🧬 RNAplot Geometry Integration
+
+RNAverse directly integrates **RNAplot** to generate biologically realistic layouts.
+
+Pipeline:
+
+```
+Sequence
+      ↓
+Dot-Bracket Structure
+      ↓
+RNAplot
+      ↓
+2D Coordinates
+      ↓
+Interactive Graph
+```
+
+When RNAplot is unavailable, an internal layout engine reconstructs the secondary structure while preserving stem-loop topology.
+
+---
+
+## 🧫 Automatic Structural Annotation
+
+RNAverse automatically detects and labels major structural elements.
+
+Including
+
+- Hairpins
+- Internal loops
+- Bulges
+- Multibranch junctions
+- Stem regions
+- Terminal loops
+- Variable loops
+- Acceptor stems
+- Anticodon stems
+- T-arms
+- D-arms
+
+allowing complex RNAs to be understood at a glance.
+
+---
+
+## 🎯 Functional Region Detection
+
+Rather than simply showing paired nucleotides, RNAverse understands biological organization.
+
+Automatically identifies
+
+- 5' regions
+- 3' regions
+- Stem boundaries
+- Loop boundaries
+- Consecutive stacking interactions
+- Functional domains
+
+Each region receives independent visual styling for rapid interpretation.
+
+---
+
+## 🧬 Nested RNA Visualization
+
+RNAverse supports visualization of complex RNA architectures that many traditional viewers cannot display naturally.
+
+Examples include
+
+- mature miRNA within pre-miRNA
+- overlapping ncRNAs
+- nested transcripts
+- precursor structures
+- multiple RNA annotations
+
+making the platform particularly useful for non-coding RNA research.
+
+---
+
+## 🔬 Motif Mining
+
+RNAverse automatically extracts structural motifs from folded RNAs.
+
+Current motif detection includes
+
+- stem discovery
+- stem length
+- stem sequence extraction
+- hairpin loops
+- internal loops
+- multiloops
+- pseudoknot placeholders
+- pairing statistics
+
+forming the basis for future automated motif discovery pipelines.
+
+---
+
+## 🧪 Live Mutation Simulator
+
+One of RNAverse's most powerful capabilities is real-time mutation analysis.
+
+Mutating any nucleotide immediately updates
+
+- sequence
+- predicted folding
+- Minimum Free Energy
+- pairing interactions
+- secondary structure
+- structural statistics
+
+allowing researchers to rapidly explore sequence-function relationships.
+
+Mutation history records
+
+- original nucleotide
+- mutated nucleotide
+- position
+- ΔG change
+- structural impact
+
+---
+
+## 📊 Structural Statistics
+
+Every analysis automatically generates quantitative metrics including
+
+- sequence length
+- GC content
+- paired fraction
+- stem count
+- loop count
+- MFE
+- prediction algorithm
+- nucleotide composition
+
+providing immediate structural summaries without external scripts.
+
+---
+
+## 🤖 AI-Assisted RNA Interpretation
+
+RNAverse includes an optional AI layer for biological interpretation.
+
+Using a lightweight background-loaded language model, users can ask natural-language questions such as
+
+> Is this RNA stable?
+
+> Show all hairpin loops.
+
+> What happens if I mutate position 42?
+
+> Explain this stem-loop.
+
+> Why is this region unstable?
+
+The assistant combines folding statistics, motif extraction, and structural metadata to generate context-aware explanations while gracefully falling back to deterministic responses if the model is unavailable.
+
+---
+
+# 📤 Export & Interoperability
+
+RNAverse is designed to integrate with downstream RNA analysis workflows.
+
+Supported exports include
+
+- Dot-Bracket notation
+- FASTA
+- BPSEQ
+- Coordinate layouts
+- Structural statistics
+- Motif summaries
+
+making interoperability straightforward with existing RNA bioinformatics tools.
+
+---
+
+# 🚀 Applications
+
+## 🧬 Non-Coding RNA Research
+
+Explore
+
+- miRNA
+- pre-miRNA
+- lncRNA
+- snoRNA
+- snRNA
+- ribozymes
+- synthetic RNAs
+
+with interactive visualization.
+
+---
+
+## 🦠 Viral Genomics
+
+Long-sequence support enables structural exploration of
+
+- SARS-CoV-2
+- Zika Virus
+- Dengue
+- Influenza
+- other RNA viruses
+
+without requiring manual segmentation.
+
+---
+
+## 💊 Drug Discovery
+
+RNAverse highlights
+
+- conserved stems
+- exposed loops
+- functional domains
+- structural motifs
+
+that may represent potential targets for
+
+- antisense oligonucleotides
+- aptamers
+- RNA-binding proteins
+- small-molecule therapeutics
+
+---
+
+## 🧪 Synthetic Biology
+
+Rapid mutation simulation makes RNAverse useful for
+
+- riboswitch engineering
+- aptamer design
+- guide RNA optimization
+- synthetic transcript design
+- educational folding experiments
+
+---
+
+## 🎓 Education
+
+RNA secondary structure can be difficult to teach using static diagrams.
+
+RNAverse allows students to
+
+- mutate sequences
+- observe structural collapse
+- compare folding algorithms
+- identify motifs
+- understand thermodynamic stability
+
+through interactive exploration.
+
+---
+
+# 🛠 Technology Stack
+
+- Python
+- Flask
+- ViennaRNA
+- RNAfold
+- RNAplfold
+- RNAplot
+- D3.js
+- HTML5 Canvas
+- TinyLlama (optional AI)
+- Hugging Face Spaces
+
+---
+
+# 🔮 Future Roadmap
+
+RNAverse is intended to become a complete interactive RNA informatics platform.
+
+Planned capabilities include
+
+### 🧬 Pseudoknot Prediction
+
+Beyond conventional secondary structures.
+
+---
+
+### 📈 Base-Pair Probability Heatmaps
+
+Visualize pairing confidence directly from partition function calculations.
+
+---
+
+### 🧪 Comparative Folding
+
+Overlay multiple RNA structures to visualize evolutionary conservation.
+
+---
+
+### 🌍 RNA Family Database Integration
+
+Direct integration with
+
+- Rfam
+- miRBase
+- RNAcentral
+- Ensembl
+
+---
+
+### 🔬 3D Structure Integration
+
+Bridge secondary structure with
+
+- PDB
+- AlphaFold RNA
+- Cryo-EM models
+
+for multi-scale visualization.
+
+---
+
+### 🤖 AI Structural Reasoning
+
+Future models will answer questions such as
+
+> Which mutations preserve this hairpin?
+
+> Which loop is most evolutionarily conserved?
+
+> Identify likely protein-binding motifs.
+
+> Predict structurally tolerant mutations.
+
+> Compare this RNA against known ncRNA families.
+
+---
+
+# 🎯 Project Vision
+
+RNAverse was built around a simple idea:
+
+**RNA should be explored—not merely folded.**
+
+Instead of generating another static secondary structure image, RNAverse transforms RNA into an interactive environment where every nucleotide, stem, loop, mutation, and structural relationship becomes immediately accessible. By combining established RNA folding algorithms with modern web visualization and AI-assisted interpretation, the goal is to lower the barrier between computational prediction and biological insight.
+
+Whether you're investigating microRNAs, designing synthetic RNAs, studying viral genomes, or teaching RNA biology, RNAverse aims to make RNA structure as interactive and intuitive as genome browsers have made DNA.
+
+---
+
+*"Every RNA tells a story. RNAverse lets you explore it nucleotide by nucleotide."*
+
+
+
 # 🌵 SaguaroScope
 
 <p align="center">
