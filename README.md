@@ -435,31 +435,6 @@ Future directions include:
 
 ---
 
-# 🧬 RNAverse
-
-<p align="center">
-  <img src="rnaverse.jpg" width="100%" alt="RNAverse Screenshot">
-</p>
-
-<p align="center">
-<b>An interactive RNA secondary structure platform for visualization, analysis, mutation, and AI-assisted interpretation.</b><br>
-RNA folding • Structural visualization • Motif discovery • Mutation simulation • Long RNA support
-</p>
-
-<p align="center">
-
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![Flask](https://img.shields.io/badge/Flask-black?style=flat-square&logo=flask)
-![ViennaRNA](https://img.shields.io/badge/ViennaRNA-RNAfold-success?style=flat-square)
-![RNAplot](https://img.shields.io/badge/RNAplot-Coordinates-blue?style=flat-square)
-![RNAplfold](https://img.shields.io/badge/RNAplfold-Long%20RNA-purple?style=flat-square)
-![TinyLlama](https://img.shields.io/badge/TinyLlama-1.1B-orange?style=flat-square)
-![D3.js](https://img.shields.io/badge/D3.js-Interactive-F9A03C?style=flat-square&logo=d3.js&logoColor=white)
-![HuggingFace](https://img.shields.io/badge/HuggingFace-Spaces-FFD21E?style=flat-square&logo=huggingface&logoColor=black)
-
-</p>
-
----
 
 # Nightingale 3D Engine
 
@@ -817,6 +792,32 @@ Traditional CAD software asks the designer to build every vertex manually.
 Nightingale instead defines a set of evolutionary rules and allows entirely new forms to emerge through mutation, inheritance, and natural selection.
 
 It is less a modeling program than an experimental laboratory for **evolving digital organisms**.
+
+---
+
+# 🧬 RNAverse
+
+<p align="center">
+  <img src="rnaverse.jpg" width="100%" alt="RNAverse Screenshot">
+</p>
+
+<p align="center">
+<b>An interactive RNA secondary structure platform for visualization, analysis, mutation, and AI-assisted interpretation.</b><br>
+RNA folding • Structural visualization • Motif discovery • Mutation simulation • Long RNA support
+</p>
+
+<p align="center">
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-black?style=flat-square&logo=flask)
+![ViennaRNA](https://img.shields.io/badge/ViennaRNA-RNAfold-success?style=flat-square)
+![RNAplot](https://img.shields.io/badge/RNAplot-Coordinates-blue?style=flat-square)
+![RNAplfold](https://img.shields.io/badge/RNAplfold-Long%20RNA-purple?style=flat-square)
+![TinyLlama](https://img.shields.io/badge/TinyLlama-1.1B-orange?style=flat-square)
+![D3.js](https://img.shields.io/badge/D3.js-Interactive-F9A03C?style=flat-square&logo=d3.js&logoColor=white)
+![HuggingFace](https://img.shields.io/badge/HuggingFace-Spaces-FFD21E?style=flat-square&logo=huggingface&logoColor=black)
+
+</p>
 
 ---
 
