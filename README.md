@@ -461,6 +461,365 @@ RNA folding • Structural visualization • Motif discovery • Mutation simula
 
 ---
 
+# Nightingale 3D Engine
+
+![screenshot](nightangle.jpg)
+
+<p align="center">
+  <strong>🧬 Neuroevolution for Procedural 3D Generation</strong><br>
+  <em>HyperNEAT • CPPNs • Genetic Algorithms • Evolutionary Design • Interactive Mesh Synthesis</em>
+</p>
+
+---
+
+<p align="center">
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![HyperNEAT](https://img.shields.io/badge/HyperNEAT-Evolutionary-black?style=flat-square&logo=databricks&logoColor=cyan)
+![CPPN](https://img.shields.io/badge/CPPN-Procedural-purple?style=flat-square)
+![Genetic Algorithm](https://img.shields.io/badge/Genetic-Algorithms-success?style=flat-square)
+![OpenGL](https://img.shields.io/badge/OpenGL-3D-blue?style=flat-square)
+![Flask](https://img.shields.io/badge/Flask-Web_App-black?style=flat-square&logo=flask)
+![Three.js](https://img.shields.io/badge/Three.js-Viewer-black?style=flat-square&logo=threedotjs)
+![OBJ](https://img.shields.io/badge/OBJ-Export-success?style=flat-square)
+
+</p>
+
+---
+
+# 🧠 Overview
+
+**Nightingale 3D Engine** is an experimental evolutionary modeling platform that treats **3D objects as genomes instead of static meshes**.
+
+Rather than sculpting vertices manually, objects are generated and evolved through **HyperNEAT**, **Compositional Pattern Producing Networks (CPPNs)**, and **genetic algorithms**, allowing entirely new forms to emerge through mutation, crossover, and procedural growth.
+
+Instead of asking:
+
+> *"How do I model this?"*
+
+the engine asks:
+
+> **"How could this evolve?"**
+
+Every object becomes an organism with inheritable traits, enabling procedural evolution instead of traditional mesh editing.
+
+---
+
+# ✨ Core Features
+
+## 🧬 HyperNEAT & CPPN Procedural Generation
+
+Generate geometry from neural networks instead of handcrafted meshes.
+
+Features include:
+
+- CPPN-based implicit geometry generation
+- HyperNEAT substrate evaluation
+- Continuous procedural shape generation
+- Infinite variation without manually editing vertices
+- Deterministic reproduction from genomes
+
+Every generated model is reproducible from its genome.
+
+---
+
+## 🧬 Evolutionary Hybridization
+
+Unlike conventional procedural generators that create one object at a time, Nightingale allows multiple organisms to breed together.
+
+The engine supports:
+
+- Multi-parent crossover
+- Genome recombination
+- Trait inheritance
+- Regional feature blending
+- Controlled diversity
+- Evolutionary branching
+
+A cactus can inherit characteristics from architecture.
+
+A rocket can inherit characteristics from a tree.
+
+Every generation produces new offspring instead of simple copies.
+
+---
+
+## 🧪 Genetic Mutation Engine
+
+Every offspring can be procedurally mutated.
+
+Mutation operators include:
+
+- geometry perturbation
+- recursive growth
+- symmetry breaking
+- complexity adjustment
+- proportional scaling
+- topology variation
+- regional mutation
+- genome noise injection
+
+The result is an evolutionary search instead of random mesh distortion.
+
+---
+
+# 🌳 Evolution Timeline
+
+Every generation is preserved.
+
+The engine records:
+
+- parent relationships
+- mutation history
+- offspring lineage
+- ancestry influence
+- evolutionary branches
+
+Objects become part of an evolving phylogenetic tree rather than isolated assets.
+
+---
+
+# 🧩 Region-Aware Mesh Segmentation
+
+Instead of treating an object as one monolithic mesh, Nightingale automatically partitions geometry into functional regions.
+
+Each region maintains independent metadata:
+
+- surface area
+- curvature
+- confidence
+- topology
+- symmetry
+- volume contribution
+
+Individual regions can then be:
+
+- mutated
+- frozen
+- hybridized
+- grafted
+- protected
+- evolved independently
+
+This enables localized evolution rather than mutating an entire object.
+
+---
+
+# 🔀 Region Grafting
+
+One of the engine's experimental features is **regional transplantation**.
+
+Entire anatomical regions can be copied between unrelated models.
+
+Examples include:
+
+- transplant tree branches onto machinery
+- attach gothic architecture onto organisms
+- merge cactus ribs into sculptures
+- splice biological structures into vehicles
+
+This creates hybrids that traditional mesh interpolation cannot produce.
+
+---
+
+# 🎨 CPPN Texture Studio
+
+Geometry and appearance evolve independently.
+
+Procedural texture generation includes:
+
+- CPPN-generated textures
+- neural color fields
+- procedural gradients
+- psychedelic patterns
+- circuit textures
+- crystalline materials
+- biological pigmentation
+- parameterized frequency
+- warp controls
+
+Textures remain procedural rather than bitmap-based.
+
+---
+
+# 🏗 Mutation Studio
+
+Morphological changes can be layered using procedural operators.
+
+Available transformation families include:
+
+### 🌱 Bioarchitecture
+
+- Ribbing
+- Tendrils
+- Apertures
+- Skeletonization
+- Vascularization
+
+---
+
+### 🤖 Cyber
+
+- Circuit traces
+- Panelization
+- Mechanical joints
+- Modular plating
+- Vent systems
+
+---
+
+### 🏛 Structural
+
+- Arches
+- Trusses
+- Support beams
+- Lattice reinforcement
+- Load paths
+
+---
+
+### 🌸 Art Nouveau
+
+- Organic vines
+- Floral motifs
+- Spirals
+- Flowing ribs
+- Whiplash curves
+
+---
+
+### 🕍 Gothic
+
+- Flying buttresses
+- Rose windows
+- Rib vaults
+- Spires
+- Tracery
+
+---
+
+### 🔷 Geometric
+
+- Cellular
+- Gyroid
+- Bubble structures
+- Crystallization
+- Faceting
+- Fragmentation
+- Inflation
+- Low-poly conversion
+- Voxelization
+
+Each modifier is evolutionary rather than destructive.
+
+---
+
+# 🧠 Genome Inspector
+
+Every organism exposes its underlying genetic state.
+
+Metadata includes:
+
+- active genome
+- evolutionary generation
+- genome influence
+- ancestry weights
+- complexity
+- symmetry
+- recursion
+- organicity
+- mechanical bias
+
+Rather than editing meshes, users manipulate genomes.
+
+---
+
+# 📊 Interactive Evolution Workspace
+
+The interface includes:
+
+- live OpenGL viewport
+- generation browser
+- mutation grid
+- offspring comparison
+- ancestry graph
+- region explorer
+- feature graph
+- evolutionary timeline
+- procedural texture preview
+- segmentation inspector
+
+Everything updates interactively during evolution.
+
+---
+
+# 📦 Import / Export
+
+Supported workflows include:
+
+- OBJ export
+- PNG rendering
+- project serialization
+- genome persistence
+- evolutionary replay
+- procedural regeneration
+
+Entire evolutionary histories can be saved and revisited.
+
+---
+
+# 🚀 Future Research
+
+The long-term vision extends beyond procedural art.
+
+Planned capabilities include:
+
+- Neural implicit surfaces
+- Signed Distance Function evolution
+- differentiable evolution
+- AI-guided fitness evaluation
+- CLIP-assisted evolutionary search
+- automatic phenotype classification
+- topology-aware crossover
+- procedural rig generation
+- physics-aware fitness functions
+- biomechanical evolution
+- architectural optimization
+- robotics morphology search
+- generative manufacturing pipelines
+
+Ultimately, Nightingale explores what happens when **computer graphics, evolutionary computation, artificial life, and procedural modeling converge into a single creative system.**
+
+---
+
+# 🛠 Technology Stack
+
+- Python
+- HyperNEAT
+- CPPNs
+- Genetic Algorithms
+- Flask
+- Three.js
+- OpenGL
+- NumPy
+- Procedural Geometry
+- Signed Distance Fields (experimental)
+- Marching Cubes
+- OBJ Pipeline
+- Hugging Face Spaces
+
+---
+
+# Philosophy
+
+Traditional CAD software asks the designer to build every vertex manually.
+
+Nightingale instead defines a set of evolutionary rules and allows entirely new forms to emerge through mutation, inheritance, and natural selection.
+
+It is less a modeling program than an experimental laboratory for **evolving digital organisms**.
+
+---
+
 # 🧬 Overview
 
 **RNAverse** is an interactive RNA secondary structure platform built to make RNA folding intuitive, explorable, and biologically meaningful.
