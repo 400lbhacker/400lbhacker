@@ -1,17 +1,58 @@
-<h1 align="center">⚠️ 400lbhacker ⚠️</h1>
+<h1 align="center">🍌 400lbhacker 🍌</h1>
 
 <p align="center">
-<em>signal > noise • exploit culture • adversarial journalism</em>
+<em>Reverse Engineering • Binary Analysis • Security Research • Systems Engineering</em>
 </p>
 
 ---
 
-### 🧠 About
-I build tools, write code, and break systems — mostly to understand them.
+## 🧠 About
 
-> **Focus:** infosec · OSINT · reverse engineering · automation
+I build analysis platforms that help understand complex software at scale.
 
+My work focuses on reverse engineering, binary analysis, malware research, program visualization, and automation. Most of my projects are built from scratch around large datasets, graph analysis, and interactive tooling rather than simple proof-of-concepts.
+
+Current areas of interest include:
+
+- Binary analysis & reverse engineering
+- Program graph construction and visualization
+- Static + dynamic analysis pipelines
+- Vulnerability research
+- Malware analysis & behavioral clustering
+- OSINT and security automation
+- Bioinformatics visualization
+- Generative algorithms (CPPN / HyperNEAT)
+
+I enjoy building tooling that makes difficult technical problems easier to explore.
 ---
+
+## 🎯 Areas of Expertise
+
+- Reverse Engineering
+- Malware Analysis
+- Static Binary Analysis
+- Dynamic Analysis & Debugging
+- Program Graph Construction
+- Call Graph Recovery
+- Control Flow Analysis
+- Binary Visualization
+- SQL-backed Program Analysis
+- Vulnerability Research
+- Python Automation
+- Interactive Data Visualization
+- Bioinformatics Tool Development
+- Evolutionary Algorithms
+- AI-assisted Security Research
+
+- # 🚀 Featured Projects
+
+| Project | Description |
+|---------|-------------|
+| **Binary Atlas** | Interactive reverse engineering platform for large-scale binary analysis with graph visualization, clustering, SQL querying, and AI-assisted exploration. |
+| **Nightingale 3D** | HyperNEAT/CPPN evolutionary design engine for procedural 3D model generation, hybridization, mutation, and texture synthesis. |
+| **RNAverse** | RNA secondary structure visualization platform with RNAfold/RNAplot integration, motif discovery, mutation simulation, and AI-assisted interpretation. |
+| **SaguaroScope** | Interactive genome browser for the saguaro cactus with BLAST annotations, DuckDB-backed genomic search, sequence extraction, and pathway visualization. |
+
 
 # Binary Atlas
 
@@ -1568,32 +1609,70 @@ As additional annotations, pathway information, comparative genomes, and express
 
 
 
-## 🧰 Stack
+# 🧰 Technical Stack
 
-### Languages
+---
+
+## 💻 Languages
+
 ![Python](https://img.shields.io/badge/Python-black?style=flat-square&logo=python&logoColor=cyan)
-![Ruby](https://img.shields.io/badge/Ruby-black?style=flat-square&logo=ruby&logoColor=red)
-![C%23](https://img.shields.io/badge/C%23-black?style=flat-square&logo=csharp&logoColor=purple)
-![Delphi](https://img.shields.io/badge/Delphi-black?style=flat-square&logo=embarcadero&logoColor=red)
 ![Go](https://img.shields.io/badge/Go-black?style=flat-square&logo=go&logoColor=cyan)
-![PowerShell](https://img.shields.io/badge/PowerShell-black?style=flat-square&logo=powershell&logoColor=blue)
+![C%23](https://img.shields.io/badge/C%23-black?style=flat-square&logo=csharp&logoColor=purple)
 ![JavaScript](https://img.shields.io/badge/JavaScript-black?style=flat-square&logo=javascript&logoColor=yellow)
+![PowerShell](https://img.shields.io/badge/PowerShell-black?style=flat-square&logo=powershell&logoColor=blue)
+![Ruby](https://img.shields.io/badge/Ruby-black?style=flat-square&logo=ruby&logoColor=red)
+![Delphi](https://img.shields.io/badge/Delphi-black?style=flat-square&logo=embarcadero&logoColor=red)
 
 ---
 
-### Offensive / Security Tooling
-![Metasploit](https://img.shields.io/badge/Metasploit-black?style=flat-square&logo=metasploit&logoColor=red)
-![Burp Suite](https://img.shields.io/badge/Burp%20Suite-black?style=flat-square&logo=portswigger&logoColor=orange)
-![BeEF XSS](https://img.shields.io/badge/BeEF--XSS-black?style=flat-square&logo=hackaday&logoColor=red)
-![Maltego](https://img.shields.io/badge/Maltego-black?style=flat-square&logo=maltego&logoColor=orange)
-![Havoc C2](https://img.shields.io/badge/Havoc%20C2-black?style=flat-square&logo=protonvpn&logoColor=purple)
+## 🔬 Reverse Engineering & Binary Analysis
 
----
-
-### Reverse Engineering & Binary Analysis
 ![radare2](https://img.shields.io/badge/radare2-black?style=flat-square&logo=gnubash&logoColor=cyan)
 ![Cutter](https://img.shields.io/badge/Cutter-black?style=flat-square&logo=gnometerminal&logoColor=cyan)
 ![r2ai](https://img.shields.io/badge/r2ai-black?style=flat-square&logo=openai&logoColor=magenta)
+![angr](https://img.shields.io/badge/angr-black?style=flat-square&logo=python&logoColor=orange)
+![Ghidra](https://img.shields.io/badge/Ghidra-black?style=flat-square&logo=openjdk&logoColor=red)
+![IDA](https://img.shields.io/badge/IDA-black?style=flat-square&logo=hexo&logoColor=cyan)
+
+---
+
+## 🐞 Dynamic Analysis & Debugging
+
+![WinDbg](https://img.shields.io/badge/WinDbg-black?style=flat-square&logo=windows&logoColor=cyan)
+![GDB](https://img.shields.io/badge/GDB-black?style=flat-square&logo=gnu&logoColor=orange)
+![x64dbg](https://img.shields.io/badge/x64dbg-black?style=flat-square&logo=windows-terminal&logoColor=green)
+![Frida](https://img.shields.io/badge/Frida-black?style=flat-square&logo=javascript&logoColor=yellow)
+
+---
+
+## 🛡 Offensive Security
+
+![Metasploit](https://img.shields.io/badge/Metasploit-black?style=flat-square&logo=metasploit&logoColor=red)
+![Burp Suite](https://img.shields.io/badge/Burp%20Suite-black?style=flat-square&logo=portswigger&logoColor=orange)
+![BeEF](https://img.shields.io/badge/BeEF-black?style=flat-square&logo=hackaday&logoColor=red)
+![Havoc C2](https://img.shields.io/badge/Havoc%20C2-black?style=flat-square&logo=protonvpn&logoColor=purple)
+![Maltego](https://img.shields.io/badge/Maltego-black?style=flat-square&logo=maltego&logoColor=orange)
+
+---
+
+## 🤖 AI / Data / Research
+
+![Hugging Face](https://img.shields.io/badge/HuggingFace-black?style=flat-square&logo=huggingface&logoColor=yellow)
+![PyTorch](https://img.shields.io/badge/PyTorch-black?style=flat-square&logo=pytorch&logoColor=orange)
+![DuckDB](https://img.shields.io/badge/DuckDB-black?style=flat-square&logo=duckdb&logoColor=yellow)
+![SQLite](https://img.shields.io/badge/SQLite-black?style=flat-square&logo=sqlite&logoColor=cyan)
+![NetworkX](https://img.shields.io/badge/NetworkX-black?style=flat-square&logo=python&logoColor=green)
+![D3.js](https://img.shields.io/badge/D3.js-black?style=flat-square&logo=d3dotjs&logoColor=orange)
+
+---
+
+## ☁ Platforms
+
+![Linux](https://img.shields.io/badge/Linux-black?style=flat-square&logo=linux&logoColor=yellow)
+![Windows](https://img.shields.io/badge/Windows-black?style=flat-square&logo=windows&logoColor=cyan)
+![Docker](https://img.shields.io/badge/Docker-black?style=flat-square&logo=docker&logoColor=blue)
+![Google Colab](https://img.shields.io/badge/Google%20Colab-black?style=flat-square&logo=googlecolab&logoColor=orange)
+![Hugging Face Spaces](https://img.shields.io/badge/HuggingFace%20Spaces-black?style=flat-square&logo=huggingface&logoColor=yellow)
 
 ---
 
