@@ -1608,6 +1608,249 @@ As additional annotations, pathway information, comparative genomes, and express
 *"If the data exists, it should be explorable."*
 
 
+🧬 MIRAGE
+Mutation Integration & Regulatory Analysis Genome Engine
+<p align="center"> <img src="mirage.jpg" width="100%"> </p> <p align="center">
+
+</p>
+🧬 MIRAGE
+
+Mutation Integration & Regulatory Analysis Genome Engine (MIRAGE) is an extensible multi-omics systems biology platform designed to reconstruct the complete regulatory landscape surrounding human genes and cancer genomes.
+
+Rather than treating mutations as isolated events, MIRAGE models how genetic variation propagates through interconnected regulatory layers—including transcription factors, enhancers, DNA methylation, chromatin accessibility, non-coding RNAs, gene expression, and biological pathways—to generate mechanistic hypotheses about disease.
+
+The platform transforms thousands of heterogeneous genomic datasets into an integrated regulatory graph capable of revealing upstream regulators, downstream consequences, network bottlenecks, and candidate driver mechanisms across cancer and complex disease.
+
+MIRAGE is available both as a local Anaconda desktop environment for large-scale analyses and as a Google Colab edition for cloud-based execution without requiring local computational resources.
+
+MIRAGE enables researchers to identify multi-layer regulatory vulnerabilities, prioritize candidate driver genes, characterize methylation-sensitive transcription factor networks, quantify regulatory disruption, and generate testable biological hypotheses from heterogeneous multi-omics datasets. Its modular architecture allows new genomic annotations, analytical methods, and machine learning models to be incorporated as the platform evolves.
+
+By integrating diverse genomic data into a unified analytical ecosystem, MIRAGE seeks to bridge the gap between mutation catalogs and mechanistic understanding -providing researchers with a powerful framework for exploring the regulatory architecture of cancer and accelerating the discovery of clinically relevant biomarkers, therapeutic targets, and disease mechanisms.
+
+As a systems biology platform designed to reconstruct the complete regulatory landscape surrounding any gene of interest. Rather than treating genes as isolated coding sequences, MIRAGE models them as dynamic nodes embedded within interconnected layers of transcriptional, epigenetic, post-transcriptional, and genomic regulation.
+
+At its core, MIRAGE integrates diverse biological datasets into a unified regulatory graph. The engine combines experimentally validated and computationally predicted miRNA–mRNA interactions, lncRNA/circRNA ceRNA sponge networks, transcription factor binding sites, candidate cis-Regulatory Elements (cCREs), CpG islands, chromatin accessibility, gene expression, and somatic or germline mutation data. These relationships are synthesized into directed regulatory networks that identify upstream controllers, downstream effects, regulatory bottlenecks, and potential master regulators.
+
+Unlike conventional annotation pipelines that simply report genomic features independently, MIRAGE performs cross-layer integration. For example, it can determine whether a disease-associated mutation falls within a transcription factor binding site located inside a CpG island that regulates a gene already targeted by multiple miRNAs and buffered by competing endogenous RNA (ceRNA) networks. This multi-dimensional context enables researchers to move beyond lists of annotations toward mechanistic hypotheses describing how regulatory disruptions may alter gene function.
+
+The platform also includes analytical modules for ranking regulatory importance, identifying highly connected network hubs, predicting master regulatory switches, mapping tissue-specific expression profiles, detecting regulatory hotspots, and generating publication-quality regulatory graphs. As additional resources such as ClinVar, COSMIC, GWAS Catalog, JASPAR, HOCOMOCO, ENCODE, and GTEx are incorporated, MIRAGE becomes an increasingly comprehensive engine for interpreting both coding and non-coding genomic variation.
+
+🔬 Core Capabilities
+🧬 Multi-Omics Integration
+
+Instead of analyzing one dataset at a time, MIRAGE combines multiple regulatory layers into a unified biological model.
+
+Integrated resources include:
+
+Somatic mutations
+Germline variants
+DNA methylation
+RNA expression
+miRNA expression
+Copy-number variation
+Chromatin accessibility
+Transcription factor binding
+Candidate cis-regulatory elements (cCREs)
+CpG islands
+Clinical metadata
+Tissue-specific expression
+
+allowing every genomic feature to be interpreted within its surrounding regulatory context.
+
+🧠 Regulatory Graph Reconstruction
+
+Every queried gene becomes the center of an interconnected regulatory network.
+
+MIRAGE reconstructs relationships including
+
+miRNA → mRNA repression
+miRNA ↔ lncRNA sponge interactions
+ceRNA competition networks
+transcription factor regulation
+enhancer-promoter associations
+methylation-sensitive promoters
+chromatin accessibility
+mutation overlap with regulatory elements
+
+instead of presenting disconnected annotation tables.
+
+🎯 Mutation Context Engine
+
+A mutation is never viewed in isolation.
+
+MIRAGE determines whether variants occur inside
+
+promoters
+enhancers
+transcription factor motifs
+CpG islands
+DNase hypersensitive regions
+miRNA target sites
+conserved regulatory elements
+
+allowing researchers to evaluate functional regulatory disruption instead of genomic position alone.
+
+🧬 Cancer Systems Biology
+
+Built around TCGA Pan-Cancer Atlas datasets, MIRAGE enables large-scale analyses across thousands of patient tumors.
+
+Supported analyses include
+
+mutation frequency
+copy-number variation
+methylation
+RNA expression
+miRNA expression
+clinical outcome
+pathway enrichment
+regulatory network disruption
+🌎 Environmental Carcinogenesis
+
+A major focus of MIRAGE is understanding environmentally induced cancers.
+
+The platform can investigate regulatory consequences associated with
+
+alcohol-derived acetaldehyde
+tobacco smoke
+ultraviolet radiation
+oxidative DNA damage
+endogenous mutational processes
+
+by connecting mutational signatures to altered transcriptional regulation and pathway activity.
+
+📈 Biological Knowledge Integration
+
+Rather than manually consulting dozens of independent databases, MIRAGE integrates them into a unified analytical framework.
+
+Current resources include
+
+Reference Genomes
+GRCh38 / hg38
+GENCODE v46
+UCSC Genome Browser
+Regulatory Annotation
+ENCODE cCRE Registry
+CpG Islands
+DNase I hypersensitive sites
+ENCODE TF ChIP-seq clusters
+Transcription Factors
+JASPAR
+CIS-BP
+HOCOMOCO
+
+including complete PWM libraries and motif databases.
+
+Non-Coding RNA
+
+Integrated support for
+
+miRBase
+miRTarBase
+ENCORI (starBase)
+TargetScan
+
+covering experimentally validated and computationally predicted regulatory interactions.
+
+Cancer Genomics
+
+Pan-Cancer datasets include
+
+TCGA MC3 mutations
+RNA-Seq
+DNA methylation
+SNP6 copy number
+clinical metadata
+miRNA expression
+Clinical & Population Genetics
+ClinVar
+GWAS Catalog
+GTEx
+Pathway Knowledge
+
+Functional enrichment is supported through
+
+KEGG
+Reactome
+Gene Ontology
+Hallmark Gene Sets (MSigDB)
+📊 Systems-Level Analysis
+
+MIRAGE performs higher-order biological analyses including
+
+Regulatory network reconstruction
+Master regulator prediction
+Network hub ranking
+Regulatory hotspot detection
+Pathway enrichment
+Expression profiling
+Tissue specificity
+Multi-layer annotation scoring
+Candidate driver prioritization
+
+instead of reporting isolated genomic annotations.
+
+⚡ Modular Architecture
+
+MIRAGE was designed as a modular framework rather than a fixed analysis pipeline.
+
+New resources can be integrated with minimal effort, allowing future support for databases such as
+
+COSMIC
+Open Targets
+DepMap
+AlphaMissense
+AlphaFold
+STRING
+BioGRID
+Human Protein Atlas
+
+without requiring major architectural changes.
+
+🚀 Platform Editions
+💻 Desktop Edition
+
+Designed for local high-performance analysis.
+
+Windows
+Anaconda
+Jupyter
+large local datasets
+reproducible workflows
+☁️ Google Colab Edition
+
+Cloud-native execution requiring no local installation.
+
+Ideal for
+
+education
+rapid prototyping
+collaborative research
+publication notebooks
+🧰 Technology Stack
+Python
+Pandas
+NumPy
+NetworkX
+Biopython
+SciPy
+Matplotlib
+Jupyter
+Google Colab
+Anaconda
+BEDTools
+htslib
+liftOver
+BLAST+
+GTF/BED/VCF parsers
+🎯 Long-Term Vision
+
+MIRAGE aims to become a regulatory genome exploration engine that bridges molecular genetics, epigenomics, transcriptomics, and systems biology within a single computational ecosystem.
+
+Rather than producing disconnected annotation tables, MIRAGE reconstructs how genomic variation propagates through regulatory networks to influence cellular behavior—transforming large-scale sequencing datasets into interpretable biological mechanisms, candidate therapeutic targets, and testable scientific hypotheses.
+
+The long-term objective is to provide researchers with a scalable platform for exploring the regulatory architecture of human disease, accelerating biomarker discovery, precision oncology, and mechanistic cancer research.
+
+
 
 # 🧰 Technical Stack
 
