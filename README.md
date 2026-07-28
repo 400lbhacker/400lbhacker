@@ -1603,10 +1603,9 @@ Rather than treating genome assemblies as static datasets hidden behind flat ann
 
 As additional annotations, pathway information, comparative genomes, and expression datasets become available, SaguaroScope is designed to grow into a comprehensive platform for cactus genomics and plant systems biology.
 
----
-
 *"If the data exists, it should be explorable."*
 
+---
 
 🧬 MIRAGE
 Mutation Integration & Regulatory Analysis Genome Engine
