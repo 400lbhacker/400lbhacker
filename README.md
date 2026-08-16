@@ -1859,7 +1859,8 @@ The long-term objective is to provide researchers with a scalable platform for e
 **Native Windows provisioning for radare2's r2ghidra and r2dec decompilers.**
 
 Automates the installation, compilation, configuration, and verification of a complete radare2 decompilation environment on Windows.
-
+**[r2di.ps1 — PowerShell installer](./r2di.ps1)**
+[📜 View r2di.ps1](https://github.com/400lbhacker/400lbhacker/blob/main/r2di.ps1)
 </p>
 
 <p align="center">
@@ -2743,7 +2744,6 @@ The complete provisioning script is available here:
 
 If the script is hosted in another repository, replace the link above with its GitHub URL.
 
-> GitHub READMEs cannot dynamically render another repository file as a live code block. A direct link is therefore preferable to duplicating the script inside the README.
 
 For users who want to inspect the implementation before executing it, the PowerShell source should be reviewed directly from the repository.
 
