@@ -11,6 +11,9 @@
 # If PowerShell policy permits:
 #   .\r2di.ps1
 
+#Visit: https://github.com/400lbhacker/400lbhacker#r2di for documentation
+
+
 $ErrorActionPreference = "Continue"
 
 # ============================================================
