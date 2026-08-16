@@ -1851,9 +1851,8 @@ The long-term objective is to provide researchers with a scalable platform for e
 
 
 
-# r2di — radare2 Decompiler Installer for Windows
-<a name="r2di"></a>
 
+<a name="r2di"></a>
 ## ⚡ R2DI — radare2 Decompiler Installer for Windows
 <p align="center">
 
@@ -2633,22 +2632,6 @@ This keeps the provisioning footprint smaller and avoids installing an entire Ja
 core_pdd.dll
 ```
 
----
-
-# Source
-
-The complete provisioning script is available here:
-
-**[r2di.ps1 — PowerShell installer](./r2di.ps1)**
-
-If the script is hosted in another repository, replace the link above with its GitHub URL.
-
-> GitHub READMEs cannot dynamically render another repository file as a live code block. A direct link is therefore preferable to duplicating the script inside the README.
-
-For users who want to inspect the implementation before executing it, the PowerShell source should be reviewed directly from the repository.
-
----
-
 # Project Philosophy
 
 r2di is intentionally focused on one problem:
@@ -2748,6 +2731,23 @@ Potential future improvements include:
 * Support for more Windows configurations
 
 If r2di saves you from manually debugging a Windows decompiler installation, consider opening an issue or contributing a fix.
+
+---
+
+# Source
+
+The complete provisioning script is available here:
+
+**[r2di.ps1 — PowerShell installer](./r2di.ps1)**
+[📜 View r2di.ps1](https://github.com/400lbhacker/400lbhacker/blob/main/r2di.ps1)
+
+If the script is hosted in another repository, replace the link above with its GitHub URL.
+
+> GitHub READMEs cannot dynamically render another repository file as a live code block. A direct link is therefore preferable to duplicating the script inside the README.
+
+For users who want to inspect the implementation before executing it, the PowerShell source should be reviewed directly from the repository.
+
+---
 
 **Built for reverse engineers who don't want to fight their toolchain.**
 
