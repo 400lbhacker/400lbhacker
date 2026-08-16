@@ -1851,6 +1851,910 @@ The long-term objective is to provide researchers with a scalable platform for e
 
 
 
+# r2di — radare2 Decompiler Installer for Windows
+<a name="r2di"></a>
+
+## ⚡ R2DI — radare2 Decompiler Installer for Windows
+<p align="center">
+
+**Native Windows provisioning for radare2's r2ghidra and r2dec decompilers.**
+
+Automates the installation, compilation, configuration, and verification of a complete radare2 decompilation environment on Windows.
+
+</p>
+
+<p align="center">
+
+![PowerShell](https://img.shields.io/badge/PowerShell-5.1%2B-blue.svg)
+![Windows](https://img.shields.io/badge/Windows-11-blue.svg)
+![radare2](https://img.shields.io/badge/radare2-6.2.0-green.svg)
+![MSVC](https://img.shields.io/badge/MSVC-native-orange.svg)
+![r2ghidra](https://img.shields.io/badge/r2ghidra-Sleigh-purple.svg)
+![r2dec](https://img.shields.io/badge/r2dec-pdd-red.svg)
+
+</p>
+
+---
+
+## What is r2di?
+
+**r2di (radare2 Decompiler Installer)** is a self-contained PowerShell provisioning script designed to make installing **r2ghidra** and **r2dec** on native Windows dramatically easier.
+
+The goal is simple:
+
+> **Turn a clean Windows reverse-engineering workstation into a functional radare2 decompilation environment with one provisioning script.**
+
+r2di automatically discovers the local toolchain, builds components where necessary, installs the resulting plugins, configures the Sleigh processor database, fixes Windows-specific configuration issues, and performs an end-to-end verification.
+
+### What it installs
+
+* **r2ghidra** — Ghidra's Sleigh-based decompiler integration
+* **r2dec / pdd** — radare2's alternative decompiler
+* Sleigh processor specifications
+* Native Windows plugin DLLs
+* Required environment variables
+* radare2 configuration
+* A Windows-compatible `unzip` shim for `r2pm`
+
+### What it verifies
+
+r2di doesn't stop after copying files.
+
+It actually tests:
+
+* MSVC compilation
+* radare2 execution
+* plugin discovery
+* r2ghidra loading
+* Sleigh configuration
+* `pdg` decompilation
+* r2dec / `pdd` decompilation
+* clean radare2 configuration loading
+
+---
+
+# Why This Exists
+
+Getting radare2 decompilers working on Windows can involve considerably more work than simply installing radare2 itself.
+
+Common problems include:
+
+* Missing MSVC build tools
+* Missing Windows SDK components
+* Meson/Ninja configuration issues
+* `r2pm` expecting Unix-style `unzip`
+* Sleigh processor database discovery failures
+* Incorrect `SLEIGHHOME`
+* radare2 configuration not being loaded from the expected location
+* Plugin ABI/version mismatches
+* r2ghidra incorrectly detecting PE architectures
+* `gcc` being selected as a SLEIGH architecture for Windows PE binaries
+* Environment variables existing in one shell but not another
+
+Typical failures look like:
+
+```text
+Cannot find the sleigh home at ./lib/radare2/6.2.0/r2ghidra_sleigh
+```
+
+or:
+
+```text
+No languages available
+```
+
+or:
+
+```text
+Architecture string does not look like sleigh id: gcc
+```
+
+r2di is designed around these Windows-specific failure modes rather than assuming that a Linux-oriented installation procedure will translate directly to Windows.
+
+---
+
+# Requirements
+
+## Operating System
+
+* Windows 11
+* PowerShell 5.1+
+
+## Required
+
+| Requirement                   | Purpose                          |
+| ----------------------------- | -------------------------------- |
+| radare2 6.2.0                 | Reverse-engineering framework    |
+| Visual Studio C++ Build Tools | MSVC compiler                    |
+| Windows 11 SDK                | Native Windows headers/libraries |
+| Git                           | Source checkout                  |
+| Python 3.11+                  | Meson runtime                    |
+| Meson                         | Build system                     |
+| Ninja                         | Native build backend             |
+
+---
+
+# Visual Studio / MSVC
+
+The recommended installation method is the **Visual Studio Installer** with the C++ development workload.
+
+The important components are:
+
+* MSVC C++ compiler
+* Windows 11 SDK
+* C++ build tools
+
+A minimal command-line installation is also possible.
+
+### Minimal Build Tools installation
+
+```powershell
+curl https://aka.ms/vs/17/release/vs_BuildTools.exe -o vs_BuildTools.exe
+
+.\vs_BuildTools.exe `
+  --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
+  --add Microsoft.VisualStudio.Component.Windows11SDK.26100
+```
+
+> The Visual Studio Installer is recommended for most users because it handles the complete toolchain installation and registration.
+
+---
+
+# Make sure `cl.exe` is available
+
+r2dec is compiled natively with Microsoft's C/C++ toolchain.
+
+For example, a Visual Studio Community installation may place the compiler here:
+
+```text
+C:\Program Files\Microsoft Visual Studio\18\Community\
+VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64
+```
+
+Verify:
+
+```powershell
+cl
+```
+
+If PowerShell cannot find `cl.exe`, add the appropriate MSVC directory to your environment or launch a Visual Studio Developer PowerShell.
+
+You should see Microsoft's compiler banner rather than:
+
+```text
+cl : The term 'cl' is not recognized...
+```
+
+---
+
+# radare2
+
+radare2 must already be installed and available from `PATH`.
+
+Verify:
+
+```powershell
+r2 -v
+```
+
+For this version of r2di:
+
+```text
+radare2 6.2.0
+```
+
+is the expected target.
+
+Also verify:
+
+```powershell
+where.exe r2
+```
+
+A typical installation might be:
+
+```text
+C:\radare2\
+```
+
+with:
+
+```text
+C:\radare2\bin
+```
+
+available through `PATH`.
+
+---
+
+# Meson + Ninja
+
+One of the interesting parts of this project is that **Node.js/NPM is not required** for the r2dec build path used by r2di.
+
+The required build tools can be installed directly with WinGet:
+
+```powershell
+winget install Ninja-build.Ninja mesonbuild.meson
+```
+
+Verify:
+
+```powershell
+meson --version
+ninja --version
+```
+
+The provisioning process itself is intentionally lightweight.
+
+On a prepared machine, the complete r2di provisioning process takes roughly **30 seconds**, depending on network and disk performance.
+
+---
+
+# Installation
+
+Clone or download the repository containing:
+
+```text
+r2di.ps1
+```
+
+Then run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\r2di.ps1
+```
+
+If your execution policy already permits local scripts:
+
+```powershell
+.\r2di.ps1
+```
+
+After installation, open a **new PowerShell session** so persisted environment variables are refreshed.
+
+---
+
+# What r2di Does
+
+## 1. Environment Discovery
+
+The script searches for:
+
+* radare2
+* Visual Studio
+* MSVC
+* Windows SDK
+* Python
+* Meson
+* Ninja
+
+It then configures the native compilation environment.
+
+Relevant compiler variables include:
+
+```text
+PATH
+INCLUDE
+LIB
+```
+
+---
+
+## 2. Build-System Preparation
+
+r2di verifies the required build tools and prepares the environment needed to compile native radare2 plugins.
+
+It also creates a small PowerShell-based `unzip` compatibility layer.
+
+This exists because `r2pm` can expect Unix-style `unzip` behavior that is not necessarily available on a normal Windows installation.
+
+The shim translates the relevant arguments into Windows-native `Expand-Archive` operations.
+
+It supports the flags required by the r2pm workflow, including:
+
+```text
+-o
+-d
+-q
+```
+
+No external Unix environment is required.
+
+---
+
+# r2ghidra Installation
+
+r2di installs r2ghidra through the radare2 package manager:
+
+```powershell
+r2pm -ci r2ghidra
+```
+
+It then locates the resulting plugin and installs:
+
+```text
+core_r2ghidra.dll
+```
+
+into the appropriate radare2 plugin directory.
+
+---
+
+# Sleigh Processor Database
+
+One of the most important parts of r2di is handling the **Sleigh processor specification database**.
+
+r2ghidra depends on Sleigh definitions for architecture and processor descriptions.
+
+On Windows, locating these files can be problematic.
+
+r2di searches the available locations and handles both:
+
+1. r2pm-managed data
+2. GitHub release data
+
+It also understands the Windows package's flat layout.
+
+Instead of assuming a Ghidra-style hierarchy such as:
+
+```text
+Processors/
+    x86/
+        data/
+            languages/
+```
+
+the script recognizes layouts where files such as:
+
+```text
+.ldefs
+.sla
+.pspec
+.cspec
+```
+
+are located directly inside the Sleigh directory.
+
+---
+
+# Critical Windows Fix: `r2ghidra.sleighhome`
+
+A major source of:
+
+```text
+No languages available
+```
+
+is r2ghidra not knowing where the Sleigh database lives.
+
+r2di configures:
+
+```text
+e r2ghidra.sleighhome=...
+```
+
+and persists the setting into the appropriate radare2 configuration file.
+
+The script also determines the appropriate configuration location using:
+
+```powershell
+r2 -H
+```
+
+It then starts a **clean radare2 process** and verifies that the configuration is actually loaded.
+
+This is important because successfully writing an environment variable does not necessarily mean a new radare2 process will consume the expected configuration.
+
+---
+
+# Critical Windows Fix: PE Architecture Detection
+
+Another Windows-specific problem is incorrect architecture detection.
+
+For some PE binaries, r2ghidra may attempt to interpret the architecture as:
+
+```text
+gcc
+```
+
+which results in:
+
+```text
+Architecture string does not look like sleigh id: gcc
+```
+
+r2di explicitly configures the default x86-64 SLEIGH language:
+
+```text
+e r2ghidra.lang=x86:LE:64:default
+```
+
+This makes the default configuration appropriate for normal 64-bit Windows PE binaries.
+
+---
+
+# r2dec Build
+
+r2dec is built directly from source.
+
+The repository is cloned recursively:
+
+```powershell
+git clone --recursive ...
+```
+
+Meson is configured using the native MSVC backend.
+
+Ninja then builds the plugin:
+
+```text
+core_pdd.dll
+```
+
+The resulting DLL is installed into the radare2 plugin directory.
+
+This means the final r2dec component is a **native Windows DLL**, rather than requiring a separate compatibility environment.
+
+---
+
+# Verification
+
+r2di performs actual functional testing rather than assuming that successful installation means success.
+
+The verification process includes:
+
+### MSVC test
+
+A small C program is compiled with:
+
+```text
+cl.exe
+```
+
+### radare2 test
+
+```powershell
+r2 -q -c "iI;q"
+```
+
+### Plugin test
+
+```powershell
+r2 -q -c "Lc"
+```
+
+The output should contain the installed plugins.
+
+### r2ghidra test
+
+```powershell
+r2 -q -c "pdg @ main" test.exe
+```
+
+### r2dec test
+
+```powershell
+r2 -q -c "pdd @ main" test.exe
+```
+
+### Configuration test
+
+The script launches clean radare2 processes and verifies that:
+
+```text
+r2ghidra.sleighhome
+```
+
+and:
+
+```text
+r2ghidra.lang
+```
+
+are actually available.
+
+---
+
+# Post-Installation Verification
+
+Open a **new PowerShell window** and run:
+
+```powershell
+r2 -v
+```
+
+Expected:
+
+```text
+radare2 6.2.0
+```
+
+Check loaded plugins:
+
+```powershell
+r2 -q -c "Lc"
+```
+
+Check Sleigh configuration:
+
+```powershell
+r2 -q -c "e r2ghidra.sleighhome"
+```
+
+Check architecture configuration:
+
+```powershell
+r2 -q -c "e r2ghidra.lang"
+```
+
+Expected:
+
+```text
+x86:LE:64:default
+```
+
+Then decompile a PE binary:
+
+```powershell
+r2 -q -c "pdg @ main" C:\path\to\binary.exe
+```
+
+And with r2dec:
+
+```powershell
+r2 -q -c "pdd @ main" C:\path\to\binary.exe
+```
+
+---
+
+# Architecture Support
+
+The default configuration targets:
+
+```text
+x86-64 PE
+```
+
+## 32-bit PE
+
+```text
+e r2ghidra.lang=x86:LE:32:default
+```
+
+## ARM64 PE
+
+```text
+e r2ghidra.lang=AARCH64:LE:64:v8A
+```
+
+## ARM32
+
+```text
+e r2ghidra.lang=ARM:LE:32:v8A
+```
+
+These can be applied for an individual radare2 session or persisted in the radare2 configuration.
+
+---
+
+# Environment Variables
+
+r2di configures and persists the following user-level variables:
+
+| Variable          | Example                                        | Purpose                   |
+| ----------------- | ---------------------------------------------- | ------------------------- |
+| `R2_PREFIX`       | `C:\radare2`                                   | radare2 installation root |
+| `R2_USER_PLUGINS` | `%USERPROFILE%\.local\share\radare2\plugins`   | User plugin directory     |
+| `SLEIGHHOME`      | `C:\radare2\lib\radare2\6.2.0\r2ghidra_sleigh` | Sleigh processor database |
+
+---
+
+# Files Created
+
+A typical installation resembles:
+
+```text
+C:\Users\%USERNAME%\
+│
+├── src\
+│   ├── r2ghidra\
+│   └── r2dec-js\
+│
+├── bin\
+│   ├── unzip.ps1
+│   └── unzip.cmd
+│
+├── .local\
+│   └── share\
+│       └── radare2\
+│           ├── plugins\
+│           │   ├── core_r2ghidra.dll
+│           │   └── core_pdd.dll
+│           │
+│           └── r2ghidra_sleigh\
+│
+└── .radare2rc
+```
+
+The radare2 installation may additionally contain:
+
+```text
+C:\radare2\
+└── lib\
+    └── radare2\
+        └── 6.2.0\
+            └── r2ghidra_sleigh\
+```
+
+---
+
+# Troubleshooting
+
+## `radare2.exe was not found`
+
+Verify:
+
+```powershell
+where.exe r2
+```
+
+If nothing is returned, add the radare2 `bin` directory to `PATH`.
+
+For example:
+
+```text
+C:\radare2\bin
+```
+
+Then open a new PowerShell window.
+
+---
+
+## Visual Studio installation was not found
+
+Install Visual Studio or the standalone Build Tools with the C++ workload and Windows SDK.
+
+The script looks for standard Community, Professional, and Enterprise installations.
+
+Verify the compiler:
+
+```powershell
+cl
+```
+
+---
+
+## `Meson was not found`
+
+Install:
+
+```powershell
+winget install mesonbuild.meson
+```
+
+or:
+
+```powershell
+pip install meson
+```
+
+---
+
+## `Ninja was not found`
+
+Install:
+
+```powershell
+winget install Ninja-build.Ninja
+```
+
+or:
+
+```powershell
+pip install ninja
+```
+
+---
+
+## r2ghidra loads but `pdg` fails
+
+Check:
+
+```powershell
+r2 -q -c "e r2ghidra.sleighhome"
+```
+
+Then:
+
+```powershell
+r2 -q -c "e r2ghidra.lang"
+```
+
+The Sleigh path should point to the installed processor database.
+
+If necessary, manually test:
+
+```text
+e r2ghidra.sleighhome=C:\radare2\lib\radare2\6.2.0\r2ghidra_sleigh
+```
+
+---
+
+## `Architecture string does not look like sleigh id: gcc`
+
+Set:
+
+```text
+e r2ghidra.lang=x86:LE:64:default
+```
+
+This is one of the Windows PE-specific problems r2di is designed to eliminate automatically.
+
+---
+
+# The `unzip` Shim
+
+The script intentionally avoids adding a heavyweight Unix compatibility layer simply to satisfy an `unzip` invocation.
+
+Instead, r2di generates:
+
+```text
+unzip.ps1
+unzip.cmd
+```
+
+The PowerShell implementation uses Windows-native:
+
+```powershell
+Expand-Archive
+```
+
+The wrapper accepts the flags expected by the r2pm workflow.
+
+This keeps the installation Windows-native while satisfying the assumptions made by the package-management tooling.
+
+---
+
+# Why Not Just Install Node.js?
+
+During development, the original r2pm workflow attempted to pull in Node.js/NPM as part of the r2dec setup.
+
+For this installation path, that dependency was unnecessary.
+
+r2di instead builds the native r2dec component through:
+
+```text
+Meson → MSVC → Ninja
+```
+
+This keeps the provisioning footprint smaller and avoids installing an entire JavaScript runtime when the end result we need is:
+
+```text
+core_pdd.dll
+```
+
+---
+
+# Source
+
+The complete provisioning script is available here:
+
+**[r2di.ps1 — PowerShell installer](./r2di.ps1)**
+
+If the script is hosted in another repository, replace the link above with its GitHub URL.
+
+> GitHub READMEs cannot dynamically render another repository file as a live code block. A direct link is therefore preferable to duplicating the script inside the README.
+
+For users who want to inspect the implementation before executing it, the PowerShell source should be reviewed directly from the repository.
+
+---
+
+# Project Philosophy
+
+r2di is intentionally focused on one problem:
+
+> **Make native radare2 decompilation on Windows boring.**
+
+No WSL requirement.
+
+No Cygwin requirement.
+
+No Linux VM.
+
+No manual Sleigh hunting.
+
+No hand-copying DLLs.
+
+No guessing which radare2 configuration file is actually being loaded.
+
+No fighting `unzip`.
+
+No unnecessary Node.js installation.
+
+Instead:
+
+```text
+Windows 11
+    │
+    ├── Visual Studio / MSVC
+    ├── Windows SDK
+    ├── Python
+    ├── Meson
+    ├── Ninja
+    └── radare2
+            │
+            ▼
+          r2di
+            │
+       ┌────┴────┐
+       ▼         ▼
+   r2ghidra    r2dec
+       │         │
+       ▼         ▼
+    Sleigh      pdd
+       │         │
+       └────┬────┘
+            ▼
+     Native Windows
+     Decompilation
+```
+
+The result is a reproducible Windows reverse-engineering environment capable of using both:
+
+```text
+pdg
+```
+
+and:
+
+```text
+pdd
+```
+
+directly from radare2.
+
+---
+
+# Credits
+
+Built for reverse engineers who don't want to spend their afternoon fighting their toolchain.
+
+**r2di** is an automation layer around the excellent open-source work provided by the radare2, r2ghidra, r2dec, Ghidra, Meson, Ninja, and Microsoft Visual C++ projects.
+
+This project does not replace those projects — it makes their Windows installation path significantly less painful.
+
+---
+
+## License
+
+r2di is provided as-is.
+
+radare2, r2ghidra, r2dec, Ghidra, and their respective components are distributed under their own licenses. Consult the upstream projects for their licensing terms.
+
+---
+
+## Contributing
+
+Issues and pull requests are welcome.
+
+Potential future improvements include:
+
+* Additional Visual Studio versions
+* More flexible radare2 installation detection
+* Automatic architecture detection
+* ARM/ARM64 defaults
+* Improved r2pm integration
+* Additional PE verification tests
+* Support for more Windows configurations
+
+If r2di saves you from manually debugging a Windows decompiler installation, consider opening an issue or contributing a fix.
+
+**Built for reverse engineers who don't want to fight their toolchain.**
+
+
+
+
+
 # 🧰 Technical Stack
 
 ---
