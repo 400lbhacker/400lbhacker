@@ -1988,7 +1988,7 @@ A minimal command-line installation is also possible.
 
 ### Minimal Build Tools installation
 
-Visual Studio 2026 Community Edition / Windows 11 SDK / Buildtoosl
+Visual Studio 2026 Community Edition / Windows 11 SDK / Buildtools
 ```powershell
 curl curl https://aka.ms/vs/18/Stable/vs_community.exe -o vs_community.exe
 
@@ -1998,6 +1998,9 @@ curl curl https://aka.ms/vs/18/Stable/vs_community.exe -o vs_community.exe
 ```
 
 > The Visual Studio Installer is recommended for most users because it handles the complete toolchain installation and registration. Just be sure to check the boxxes
+>It will also look for [+] Visual Studio location ie:
+```C:\Program Files\Microsoft Visual Studio\18\Community```
+> if you insist upon using the CLI route for visual studio installation you may need to comment out line 380 - 382 
 
 ---
 
