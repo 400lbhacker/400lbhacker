@@ -1988,15 +1988,16 @@ A minimal command-line installation is also possible.
 
 ### Minimal Build Tools installation
 
+Visual Studio 2026 Community Edition / Windows 11 SDK / Buildtoosl
 ```powershell
-curl https://aka.ms/vs/17/release/vs_BuildTools.exe -o vs_BuildTools.exe
+curl curl https://aka.ms/vs/18/Stable/vs_community.exe -o vs_community.exe
 
-.\vs_BuildTools.exe `
+.\vs_community.exe `
   --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
   --add Microsoft.VisualStudio.Component.Windows11SDK.26100
 ```
 
-> The Visual Studio Installer is recommended for most users because it handles the complete toolchain installation and registration.
+> The Visual Studio Installer is recommended for most users because it handles the complete toolchain installation and registration. Just be sure to check the boxxes
 
 ---
 
