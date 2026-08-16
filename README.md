@@ -2092,11 +2092,9 @@ On a prepared machine, the complete r2di provisioning process takes roughly **30
 
 # Installation
 
-Clone or download the repository containing:
-
-```text
-r2di.ps1
-```
+Download:
+**[r2di.ps1 — PowerShell installer](./r2di.ps1)**
+[📜 View r2di.ps1](https://github.com/400lbhacker/400lbhacker/blob/main/r2di.ps1)
 
 Then run:
 
