@@ -2742,9 +2742,6 @@ The complete provisioning script is available here:
 **[r2di.ps1 — PowerShell installer](./r2di.ps1)**
 [📜 View r2di.ps1](https://github.com/400lbhacker/400lbhacker/blob/main/r2di.ps1)
 
-If the script is hosted in another repository, replace the link above with its GitHub URL.
-
-
 For users who want to inspect the implementation before executing it, the PowerShell source should be reviewed directly from the repository.
 
 ---
