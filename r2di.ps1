@@ -2,16 +2,14 @@
 # radare2 6.2.0 + r2ghidra + Sleigh + r2dec
 # Windows / PowerShell 5.1 compatible
 #
-# IMPORTANT:
-# Replace the ENTIRE old r2di.ps1 with this file.
 #
 # Run:
 #   powershell -ExecutionPolicy Bypass -File .\r2di.ps1
 #
 # If PowerShell policy permits:
 #   .\r2di.ps1
-
-#Visit: https://github.com/400lbhacker/400lbhacker#r2di for documentation
+#
+#Visit: https://github.com/400lbhacker/400lbhacker#r2di for documentation.
 
 
 $ErrorActionPreference = "Continue"
