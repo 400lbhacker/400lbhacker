@@ -2839,7 +2839,7 @@ For users who want to inspect the implementation before executing it, the PowerS
 ---
 
 ### 📡 Contact
-- 🔗 LinkedIn
+- 🔗 LinkedIn: https://www.linkedin.com/in/joseph-erickson-0b4405342/
 - 🐦 Twitter
 - ✉️ Email: josepherickson135@gmail.com
 
