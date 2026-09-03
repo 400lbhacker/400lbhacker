@@ -1607,8 +1607,7 @@ As additional annotations, pathway information, comparative genomes, and express
 
 ---
 
-<a name="mirage"></a>
-## 🧬 MIRAGE — Mutation Integration & Regulatory Analysis Genome Engine
+<h2 id="mirage">🧬 MIRAGE — Mutation Integration & Regulatory Analysis Genome Engine</h2>
 <p align="center"> <img src="mirage.jpg" width="100%"> </p>
 
 </p>
