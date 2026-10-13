@@ -475,7 +475,765 @@ Future directions include:
 > Start exploring them as systems.
 
 ---
+# Binary Mirror
 
+![screenshot](binarymirror.jpg)
+
+<p align="center">
+  <strong>Dynamic Binary Intelligence & Execution Tracing Platform</strong><br>
+  Runtime Analysis • API Tracing • Caller Attribution • Resource Lifecycle Analysis • IPC • Security Context • BinaryAtlas Integration
+</p>
+
+<p align="center">
+
+![Python](https://img.shields.io/badge/Python-3.11+-blue?style=flat-square&logo=python)
+![radare2](https://img.shields.io/badge/radare2-Core-black?style=flat-square&logo=gnubash&logoColor=cyan)
+![Windows](https://img.shields.io/badge/Platform-Windows-0078D4?style=flat-square&logo=windows)
+![Dynamic Analysis](https://img.shields.io/badge/Dynamic-Analysis-purple?style=flat-square)
+![Reverse Engineering](https://img.shields.io/badge/Reverse-Engineering-red?style=flat-square)
+![Execution Tracing](https://img.shields.io/badge/Execution-Tracing-cyan?style=flat-square)
+![Resource Analysis](https://img.shields.io/badge/Resource-Lifecycle-orange?style=flat-square)
+![Cybersecurity](https://img.shields.io/badge/Cyber-Security-green?style=flat-square)
+
+</p>
+
+---
+
+## What is Binary Mirror?
+
+Binary Mirror is a dynamic execution intelligence platform built around radare2 that transforms live binary behavior into an interactive, temporally correlated investigation environment.
+
+Instead of relying exclusively on static disassembly, Binary Mirror observes what happens when a program actually executes.
+
+It can launch a target from a cold start or attach to an existing process, tracing observed function activity across executable modules, nested DLLs, operating-system APIs, and supported process boundaries.
+
+Binary Mirror correlates:
+
+- Function execution events
+- Timestamps and wall-clock time
+- Function arguments and return values
+- Immediate callers and cross-module relationships
+- Thread activity and execution timelines
+- Runtime addresses and loaded modules
+- Resource creation, usage, and release
+- Handle lifecycle anomalies
+- Token and security-related API activity
+- Process communication and IPC relationships
+- Register state at captured events
+- Function invocation statistics
+- Temporal relationships between events
+- Static-analysis findings from BinaryAtlas
+
+The result is a platform for investigating how software behaves at runtime, which functions are actually exercised, what arguments they receive, and how execution moves through the underlying system.
+
+```text
+             Target Binary
+                  |
+                  v
+         Dynamic Instrumentation
+                  |
+                  v
+          Function Execution
+                  |
+         +--------+--------+
+         |        |        |
+         v        v        v
+       Calls    Threads   Arguments
+         |        |        |
+         +--------+--------+
+                  |
+                  v
+          Temporal Correlation
+                  |
+         +--------+---------+
+         |        |         |
+         v        v         v
+      Resource  Security    IPC
+      Lifecycles Context    Graph
+         |        |         |
+         +--------+---------+
+                  |
+                  v
+       Runtime Investigation
+                  |
+                  v
+        BinaryAtlas Correlation
+```
+
+---
+
+# Core Capabilities
+
+## Dynamic Function Tracing
+
+Binary Mirror records observed function executions and exposes their runtime context.
+
+Captured event information can include:
+
+- Relative timestamps
+- Wall-clock timestamps
+- Process and thread IDs
+- Function names and addresses
+- Module ownership
+- Immediate caller attribution
+- Captured function arguments
+- Return values
+- Observed execution duration
+- Register state
+- Previous and next events on the same thread
+- Temporally neighboring events across threads
+
+Example:
+
+```text
+Time (s)    Thread    Function
+------------------------------------------------
+299.672323  20772     KERNELBASE.dll!RegOpenKeyExInternalW
+299.526614  20772     KERNELBASE.dll!RegOpenKeyExW
+299.231766  20772     ntdll.dll!RtlDisownModuleHeapAllocation
+```
+
+Select an event to inspect its arguments, return value, caller, registers, module, and surrounding execution activity.
+
+The goal is to make individual runtime events navigable evidence rather than isolated log entries.
+
+---
+
+## Execution Timeline
+
+The live timeline provides a temporal view of observed function activity.
+
+Features include:
+
+- Function-level event visualization
+- Time-axis zooming and navigation
+- Event inspection
+- Thread-aware execution analysis
+- Temporal neighborhood exploration
+- Module-boundary visualization
+- Event-to-detail navigation
+- Correlation between timeline events and function statistics
+
+Rather than reading thousands of log lines sequentially, investigators can identify activity patterns and jump directly to interesting execution points.
+
+```text
+Time ----------------------------------------------------->
+
+Thread A   [API]---[API]------[ALLOC]---[CLOSE]----[API]
+Thread B        [TOKEN]----------[IPC]--------[API]
+Thread C   [MODULE LOAD]-------------------[ALLOC]
+
+                     |
+                     v
+              Inspect Event
+                     |
+          +----------+----------+
+          |          |          |
+          v          v          v
+        Caller     Arguments   Registers
+```
+
+Temporal proximity is used to help discover relationships. Events close together in time are not automatically assumed to be causally related.
+
+---
+
+## Caller Attribution & Execution Graphs
+
+One of Binary Mirror's primary goals is identifying which functions trigger lower-level APIs during an actual execution.
+
+A program may invoke a high-level operation that passes through several libraries before reaching a Windows API.
+
+```text
+Application
+     |
+     v
+Application Wrapper
+     |
+     v
+Windows Component
+     |
+     v
+KERNELBASE.dll
+     |
+     v
+ntdll.dll
+     |
+     v
+Operating System Boundary
+```
+
+Binary Mirror helps investigate these paths using observed callers and module attribution.
+
+Capabilities include:
+
+- Immediate caller inspection
+- Cross-module caller relationships
+- Function-level caller statistics
+- Caller graph navigation
+- API invocation counts
+- Function-to-module attribution
+- Runtime address inspection
+- Cross-reference investigation
+- High-frequency caller identification
+
+This is especially useful when a function in a deeply nested DLL is triggered indirectly through multiple wrappers.
+
+Where caller resolution and capture coverage permit, investigators can work backward from an observed API toward the code that invoked it.
+
+---
+
+## Nested DLL API Intelligence
+
+Windows applications frequently rely on extensive chains of system libraries.
+
+Binary Mirror helps identify which instrumented functions were observed inside these modules during a particular execution.
+
+Example modules include:
+
+```text
+Taskmgr.exe
+ntdll.dll
+KERNEL32.dll
+KERNELBASE.dll
+ucrtbase.dll
+ADVAPI32.dll
+USER32.dll
+RPCRT4.dll
+SHCORE.dll
+Windows.Storage.dll
+dnsapi.dll
+```
+
+Investigations can focus on:
+
+- Registry access
+- File-system operations
+- Dynamic module loading
+- Memory allocation
+- Heap management
+- Process and thread operations
+- Security-token APIs
+- Networking-related APIs
+- Inter-process communication
+- Synchronization and handle management
+
+The key question is no longer simply whether an API exists in the binary.
+
+It becomes:
+
+> Which function invoked it, what arguments were observed, on which thread did it execute, and what happened around that event?
+
+---
+
+## Function Statistics
+
+Binary Mirror aggregates observed execution activity into function-level statistics.
+
+Example:
+
+```text
+Function: KERNELBASE.dll!GetProcAddress
+
+Calls:              340
+First observed:     0.135871s
+Last observed:      284.043031s
+Mean call gap:      0.8375s
+
+Top callers:
+    ucrtbase.dll+0x91f2       x24
+    ucrtbase.dll+0xb3955      x6
+    combase.dll+0x17bebf      x4
+    combase.dll+0x3a0d7       x4
+```
+
+Statistics can include:
+
+- Total call count
+- First and last occurrence
+- Mean interval between calls
+- Total observed execution time
+- Thread distribution
+- Top callers
+- Argument diversity
+- Individual occurrences with captured arguments
+
+This makes it easier to identify repeatedly invoked APIs, unusual call patterns, and functions that warrant closer investigation.
+
+---
+
+## Resource Lifecycle Analysis
+
+Binary Mirror includes resource lifecycle analysis intended to identify suspicious acquisition, use, and release patterns.
+
+Depending on the enabled capture options and supported resource types, it can expose candidate findings such as:
+
+- Potential resource leaks
+- Double-close candidates
+- Double-free candidates
+- Resource lifetime anomalies
+- Unexpected release patterns
+- Allocation and memory-pressure indicators
+- Potential out-of-memory-related behavior
+
+Example:
+
+```text
+Resource Lifecycle
+
+Handle      Type          State
+-----------------------------------------------
+0xfc#0      RegistryKey   LEAK_CANDIDATE
+0xfc#1      RegistryKey   DOUBLE_CLOSED
+```
+
+Additional evidence may include:
+
+```text
+Resource Type: RegistryKey
+
+Created by:
+    KERNELBASE.dll!RegOpenKeyExInternalW
+
+State:
+    DOUBLE_CLOSED
+
+Evidence:
+    DOUBLE_CLOSE_CANDIDATE
+
+Observed lifetime:
+    0.457 seconds
+```
+
+The lifecycle view helps connect a resource anomaly to the functions that created, used, or released the resource.
+
+Some lifecycle analysis requires return-value capture, such as `--capture-returns`.
+
+### Important distinction
+
+A candidate is not automatically a confirmed vulnerability.
+
+A resource that remains open at the end of a trace may have been intentionally retained. Handle reuse, incomplete capture, and API-specific semantics can also affect lifecycle interpretation.
+
+Double-free, memory-exhaustion, and related findings require suitable evidence and validation. Binary Mirror is designed to surface and investigate suspicious behavior rather than declare every candidate exploitable.
+
+---
+
+## Memory & Heap Investigation
+
+Memory-management APIs can expose useful evidence about allocation patterns, object lifetimes, and potential defects.
+
+Binary Mirror can help investigators examine observed memory-related calls and their surrounding execution context.
+
+Example APIs and operations of interest include:
+
+```text
+HeapAlloc
+HeapFree
+HeapReAlloc
+VirtualAlloc
+VirtualFree
+VirtualProtect
+RtlAllocateHeap
+RtlFreeHeap
+RtlDisownModuleHeapAllocation
+```
+
+Potential investigative targets include:
+
+- Unexpected allocation sizes
+- Repeated allocation and release patterns
+- Suspiciously large allocation requests
+- Potential double frees
+- Resource ownership inconsistencies
+- Heap-related failures
+- Allocation pressure and possible OOM behavior
+- Calls occurring across multiple threads
+
+Example event:
+
+```text
+Function:
+    ntdll.dll!RtlDisownModuleHeapAllocation
+
+Argument:
+    dwBytes = 0x7ffffffffffffffc
+
+Thread:
+    20772
+
+Caller:
+    Windows.Storage.dll+0xf771e
+```
+
+The value and function name provide an investigation lead, not proof of a successful allocation, a memory corruption vulnerability, or an out-of-memory condition. Interpretation depends on the function's actual semantics, argument capture, and surrounding evidence.
+
+---
+
+## Security & Token Intelligence
+
+Binary Mirror provides complementary views of process security context and observed token-related API activity.
+
+### Process security context
+
+Where token probing is enabled, observations may include:
+
+- User identity
+- Process ID
+- Session
+- Integrity level
+- Elevation type
+- Elevated versus limited token state
+- Observation timestamps
+
+Example:
+
+```text
+PID:        15656
+Integrity:  Medium
+Elevation:  Limited
+Elevated:   false
+
+Evidence:
+    OBSERVED_TOKEN_STATE
+```
+
+### Function-level token tracing
+
+Binary Mirror can also identify functions that perform token-related operations.
+
+Example:
+
+```text
+Time (s)    Thread    Function
+------------------------------------------------
+11.908186   13964     ntdll.dll!NtOpenThreadToken
+12.570023   13964     ntdll.dll!NtOpenThreadToken
+28.606842   13964     ntdll.dll!NtOpenThreadToken
+28.967497   13964     ntdll.dll!NtOpenThreadToken
+```
+
+Event details can expose:
+
+- Requested access masks
+- Thread handles
+- Token handles
+- OpenAsSelf values
+- Calling functions
+- Thread distribution
+- Return values
+- Argument diversity
+
+This helps answer questions such as:
+
+- Which functions initiate token-related operations?
+- Which threads repeatedly request token access?
+- What access masks are being requested?
+- Which callers should be investigated further?
+- What security-related activity occurred around a suspicious event?
+
+### Observed API activity versus elevation
+
+A token API call does not by itself establish privilege escalation.
+
+Binary Mirror separates observed process-token state from traced token-related function activity. These sources can be correlated by time, but the tool should not infer a privilege transition without supporting evidence.
+
+The objective is to help identify the actual functions participating in security-sensitive behavior, rather than merely reporting the final privilege state of a process.
+
+---
+
+## IPC & Cross-Component Investigation
+
+Modern Windows applications rely on multiple communication mechanisms, including COM and ALPC.
+
+Binary Mirror can visualize relationships derived from collected IPC events and link graph relationships back to their underlying event evidence.
+
+The IPC investigation view helps explore:
+
+- Observed communication entities
+- COM-related activity
+- ALPC activity
+- Relationships between components
+- Underlying calls associated with graph edges
+- Temporal correlation with function execution
+- Cross-component behavior
+
+Example:
+
+```text
+IPC Investigation
+
+PID: 15656
+
+ALPC events: 12
+COM events:   1
+Total:       13
+```
+
+IPC relationships can help identify interactions that are not obvious from the primary executable or a conventional process tree.
+
+The graph represents relationships supported by collected events; it should not be treated as a complete inventory of every communication channel unless capture coverage establishes that completeness.
+
+---
+
+## Module Intelligence
+
+Binary Mirror maintains a module-oriented view of observed execution.
+
+Example:
+
+```text
+Module          Base Address       Size (KB)
+------------------------------------------------
+Taskmgr.exe     0x7ff761d30000     5614.5
+ntdll.dll       0x7ffe07d40000     2463
+KERNEL32.dll    0x7ffe05ab0000     824.7
+KERNELBASE.dll  0x7ffe05090000     4113.4
+ucrtbase.dll    0x7ffe05630000     1345.2
+ADVAPI32.dll    0x7ffe062f0000     760.1
+```
+
+Module information can include:
+
+- Loaded module names
+- Runtime base addresses
+- Image sizes
+- First-seen timestamps
+- Module paths
+- Associated function activity
+- Observed API usage
+
+This helps investigators determine where runtime activity occurs and navigate between the executable, supporting libraries, and lower-level Windows components.
+
+---
+
+## Thread & Concurrency Analysis
+
+Binary Mirror organizes observed activity by thread and provides temporal context for investigating concurrent behavior.
+
+Capabilities include:
+
+- Per-thread execution lanes
+- Thread-specific event navigation
+- Function invocation counts by thread
+- Cross-thread temporal neighborhoods
+- Resource access correlation
+- Overlapping-access candidates
+
+Example:
+
+```text
+Thread 13964    [API]----[TOKEN]----[API]--------[CLOSE]
+
+Thread 15516          [ALLOC]------[API]----[RESOURCE]
+
+Thread 20772     [REGISTRY]----[API]----[CLOSE]
+```
+
+### Concurrency candidates
+
+Where sufficient resource and timing information is available, Binary Mirror can identify overlapping accesses to shared resources across threads.
+
+These candidates can help prioritize investigation into:
+
+- Possible race conditions
+- Synchronization defects
+- Resource lifetime inconsistencies
+- Concurrent handle operations
+
+Temporal overlap alone does not prove a race condition. Confirming a race requires understanding shared state, synchronization, ordering, and the relevant execution semantics.
+
+---
+
+## Cold Launch & Process Attachment
+
+Binary Mirror is designed for two primary investigation workflows.
+
+### Cold launch
+
+Launch a target under observation to capture behavior from the beginning of the recorded execution.
+
+Useful for examining:
+
+- Initialization routines
+- Startup-time API calls
+- DLL loading
+- Early resource acquisition
+- Initial security-related operations
+- Process and thread creation
+
+### Attach to an existing process
+
+Attach to a running target to investigate behavior during a particular operational phase.
+
+Useful for:
+
+- Long-running applications
+- Background processes
+- Windows services, where supported
+- Delayed behavior
+- Nested DLL activity
+- Runtime troubleshooting
+
+Attaching after startup does not recover earlier events that were not captured.
+
+Actual coverage depends on the tracing backend, permissions, target architecture, instrumentation boundaries, and available symbols.
+
+---
+
+## BinaryAtlas Integration
+
+Binary Mirror is designed to complement BinaryAtlas, the static binary intelligence platform.
+
+BinaryAtlas builds an explorable representation of functions, imports, call relationships, and security-relevant patterns.
+
+Binary Mirror adds the runtime perspective: which instrumented functions were observed, when they executed, who called them, and what arguments were captured.
+
+Together, they support a workflow that combines static hypotheses with dynamic evidence.
+
+```text
+                 BinaryAtlas
+              Static Intelligence
+                      |
+                      v
+             Functions & Call Graph
+                      |
+                      v
+             Identify Investigation
+                   Targets
+                      |
+                      v
+                Binary Mirror
+              Dynamic Execution
+                      |
+          +-----------+-----------+
+          |           |           |
+          v           v           v
+       Arguments   Callers      Timing
+          |           |           |
+          +-----------+-----------+
+                      |
+                      v
+             Runtime Evidence
+                      |
+                      v
+            Focused Investigation
+```
+
+### Example workflow
+
+1. Identify a suspicious function or call path in BinaryAtlas.
+2. Launch or attach to the target with Binary Mirror.
+3. Observe the function's runtime activity and captured arguments.
+4. Identify the functions that invoke the relevant APIs.
+5. Investigate repeated calls, resource lifecycle anomalies, and security-related activity.
+6. Return to static analysis to inspect the responsible implementation and surrounding code.
+
+This helps reduce the search space in large binaries and complex Windows dependency trees.
+
+The integration is intended to complement static analysis, not replace it. Runtime traces describe observed executions and cannot establish that unobserved paths are unreachable.
+
+---
+
+## Extensible Analysis Ecosystem
+
+Binary Mirror is built around radare2 and is designed to complement a broader reverse-engineering toolchain.
+
+| Technology | Potential role |
+|---|---|
+| [radare2](https://github.com/radareorg/radare2) | Core reverse-engineering and analysis foundation |
+| [Triton](https://github.com/JonathanSalwan/Triton) | Symbolic execution and dynamic taint-analysis workflows |
+| [angr](https://github.com/angr/angr) | Program analysis and symbolic execution |
+| [Frida](https://github.com/frida/frida) | Runtime instrumentation and custom API interception |
+| [Scylla](https://github.com/x64dbg/Scylla) | Complementary unpacking and import-reconstruction workflows |
+
+Integration availability depends on the implementation and target environment. These tools have distinct roles and are not necessarily enabled in every Binary Mirror configuration.
+
+---
+
+## Designed For
+
+- Reverse Engineers
+- Malware Analysts
+- Vulnerability Researchers
+- Windows Internals Researchers
+- Security Engineers
+- Detection Engineers
+- Incident Responders
+- Threat Hunters
+- Software Security Researchers
+- Systems Programmers
+- Dynamic Analysis Researchers
+
+---
+
+## Long-Term Vision
+
+Traditional reverse-engineering workflows often separate:
+
+```text
+Static Analyzer
+      |
+      v
+Disassembler
+      |
+      v
+Debugger
+      |
+      v
+API Monitor
+      |
+      v
+Execution Logs
+      |
+      v
+Call Graph
+      |
+      v
+Investigation Notes
+```
+
+Binary Mirror aims to bring these perspectives closer together through a unified runtime investigation environment.
+
+Potential future directions include:
+
+- Deeper BinaryAtlas runtime correlation
+- Expanded API and caller attribution
+- Enhanced resource ownership analysis
+- More comprehensive memory-lifecycle instrumentation
+- Trace comparison across executions
+- Improved IPC relationship analysis
+- Additional symbolic execution workflows
+- Dynamic taint-analysis integration
+- More extensive concurrency investigation
+- Reproducible evidence export
+- Cross-version behavioral comparison
+- Automated investigation prioritization
+
+---
+
+## Philosophy
+
+> Static analysis shows you what a binary could do.
+>
+> Dynamic analysis shows you what happened during an observed execution.
+>
+> Binary Mirror connects the event to its arguments, caller, timing, and surrounding system behavior.
+
+**Don't just find the API. Find the execution path that triggered it.**
+
+**Don't just inspect the process. Investigate the functions behind its behavior.**
+
+**Don't stop at the trace. Turn runtime evidence into deeper binary intelligence.**
+
+---
+
+## Related Project
+
+**BinaryAtlas** — Interactive Binary Intelligence Platform
+
+https://github.com/400lbhacker/BinaryAtlas
+
+---
 
 # Nightingale 3D Engine
 
