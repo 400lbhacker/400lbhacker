@@ -2065,7 +2065,7 @@ https://github.com/400lbhacker/BinaryAtlas
 # Nightingale 3D Engine
 
 ![screenshot](nightangle.jpg)
-
+![screenshot](3d.jpg)
 <p align="center">
   <strong>🧬 Neuroevolution for Procedural 3D Generation</strong><br>
   <em>HyperNEAT • CPPNs • Genetic Algorithms • Evolutionary Design • Interactive Mesh Synthesis</em>
