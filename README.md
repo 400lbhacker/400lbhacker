@@ -48,11 +48,838 @@ I enjoy building tooling that makes difficult technical problems easier to explo
 
 | Project | Description |
 |---------|-------------|
-| **Binary Atlas** | Interactive reverse engineering platform for large-scale binary analysis with graph visualization, clustering, SQL querying, and AI-assisted exploration. |
-| **Nightingale 3D** | HyperNEAT/CPPN evolutionary design engine for procedural 3D model generation, hybridization, mutation, and texture synthesis. |
+| **Binary Atlas** | Interactive reverse engineering platform for large-scale binary analysis with graph visualization, function clustering, SQL querying, vulnerability research, and AI-assisted exploration. |
+| **Binary Mirror** | Dynamic binary execution tracing and analysis platform built around radare2, capturing function calls, arguments, return values, timestamps, IPC activity, privilege context, and resource lifecycles to investigate runtime behavior and memory-management defects. |
+| **Waypoint** | Infrastructure-driven threat intelligence platform that enriches IOCs with BGP, ASN, reverse DNS, and multi-vantage traceroute data to discover shared infrastructure, correlate network relationships, and identify candidate malware campaign infrastructure. |
+| **R2DI** | Automated Windows setup script that integrates the Ghidra decompiler into radare2, streamlining installation and configuration of reverse-engineering plugins and their build dependencies. |
+| **Nightingale 3D** | HyperNEAT/CPPN evolutionary design engine for procedural 3D model generation, regional hybridization, mutation, feature segmentation, and texture synthesis. |
 | **RNAverse** | RNA secondary structure visualization platform with RNAfold/RNAplot integration, motif discovery, mutation simulation, and AI-assisted interpretation. |
 | **SaguaroScope** | Interactive genome browser for the saguaro cactus with BLAST annotations, DuckDB-backed genomic search, sequence extraction, and pathway visualization. |
 
+
+# Waypoint
+
+![screenshot](Waypoint.jpg)
+
+<p align="center">
+  <strong>Infrastructure-Driven Threat Intelligence & Campaign Discovery</strong><br>
+  IOC Enrichment • Multi-Vantage Traceroutes • BGP Intelligence • ASN Correlation • Infrastructure Graphs • Offline Discovery
+</p>
+
+<p align="center">
+
+![Python](https://img.shields.io/badge/Python-3.11+-blue?style=flat-square&logo=python)
+![Threat Intelligence](https://img.shields.io/badge/Threat-Intelligence-red?style=flat-square)
+![BGP](https://img.shields.io/badge/BGP-Routing-blue?style=flat-square)
+![Traceroute](https://img.shields.io/badge/Multi--Vantage-Traceroute-purple?style=flat-square)
+![IOC Enrichment](https://img.shields.io/badge/IOC-Enrichment-orange?style=flat-square)
+![Graph Analysis](https://img.shields.io/badge/Infrastructure-Graph-cyan?style=flat-square)
+![SQL](https://img.shields.io/badge/SQL-Investigation-green?style=flat-square)
+![Cybersecurity](https://img.shields.io/badge/Cyber-Security-black?style=flat-square)
+
+</p>
+
+---
+
+## What is Waypoint?
+
+Waypoint is an infrastructure-driven threat intelligence and malware campaign discovery platform designed to uncover relationships between indicators of compromise, network infrastructure, routing paths, autonomous systems, and observed malware families.
+
+Traditional threat intelligence workflows frequently begin with known indicators and attempt to enrich or classify them using external feeds.
+
+Waypoint takes a different approach.
+
+It combines IOC collection with BGP data, reverse DNS, ASN metadata, geographic enrichment, and multipath traceroutes collected from multiple vantage points. These observations are correlated into an infrastructure intelligence graph that can reveal additional candidate infrastructure not present in the original IOC feeds.
+
+The platform is designed to help answer a different question:
+
+> What additional infrastructure can we discover by investigating the network surrounding an indicator, rather than investigating only the indicator itself?
+
+Core data sources and analytical dimensions include:
+
+- Indicators of compromise from multiple sources
+- IPv4 and IPv6 network intelligence
+- BGP prefixes and routing relationships
+- Autonomous system numbers and ASN metadata
+- Reverse DNS and PTR records
+- Multi-vantage traceroutes
+- Router and hop-level observations
+- IP-to-prefix and IP-to-ASN relationships
+- Malware-family associations
+- Infrastructure convergence across vantage points
+- Fast-flux candidates
+- DGA-like hostname candidates
+- Shared-infrastructure clusters
+- SQL-based threat hunting
+- Evidence-backed graph exploration
+
+The goal is to move beyond static IOC lists toward a continuously enriched, infrastructure-oriented view of potential malware campaigns.
+
+```text
+                  IOC Sources
+                      |
+                      v
+               IOC Collection
+                      |
+           +----------+----------+
+           |          |          |
+           v          v          v
+          BGP        RDNS       ASN Metadata
+           |          |          |
+           +----------+----------+
+                      |
+                      v
+            Multi-Vantage Tracing
+                      |
+             +--------+--------+
+             |        |        |
+             v        v        v
+           Routers   ASNs    Prefixes
+             |        |        |
+             +--------+--------+
+                      |
+                      v
+             Infrastructure Graph
+                      |
+          +-----------+-----------+
+          |           |           |
+          v           v           v
+       Clusters    Candidates    SQL
+          |           |           |
+          +-----------+-----------+
+                      |
+                      v
+           Infrastructure Discovery
+```
+
+---
+
+# Core Capabilities
+
+## 1. Infrastructure-Driven Campaign Discovery
+
+Waypoint investigates relationships between known indicators and the surrounding network infrastructure.
+
+An IOC is not treated as an isolated IP address or hostname. It becomes an entry point into a larger investigation involving its routing environment, network prefix, autonomous system, observed routers, DNS records, and other indicators associated with related infrastructure.
+
+Potential discovery paths include:
+
+```text
+Known IOC
+   |
+   v
+Observed Router
+   |
+   v
+Upstream ASN
+   |
+   v
+Shared Infrastructure
+   |
+   v
+Additional Candidate IOC
+```
+
+Infrastructure relationships can also be explored laterally and downstream where the collected observations support those connections.
+
+This allows investigators to identify infrastructure candidates that may be worth examining even when those candidates were not included in the initial threat feeds.
+
+### Discovery without constant external scanning
+
+One of the project's central design goals is to discover candidate infrastructure from locally available intelligence and previously collected observations.
+
+Once the enrichment data is available, investigators can query existing relationships without requiring a fresh Internet-wide scan for every investigation.
+
+This enables offline analysis of:
+
+- Shared routing infrastructure
+- Repeated ASN associations
+- Common BGP prefixes
+- Infrastructure observed along multiple traceroutes
+- Related IOC records
+- Historical infrastructure relationships
+- Potentially connected malware-family clusters
+
+In small-scale experimental runs, the platform has surfaced additional infrastructure candidates beyond the original feed entries.
+
+These results are investigative leads rather than confirmed campaign attribution. Their value comes from providing new candidates for validation.
+
+---
+
+## 2. Automated IOC Collection & Enrichment
+
+Waypoint automatically collects indicators from multiple configured sources and enriches them in the background.
+
+Instead of requiring analysts to manually investigate every IP address, the platform builds a local intelligence dataset that can be queried and correlated.
+
+Enrichment dimensions include:
+
+- BGP announcements and prefixes
+- ASN ownership and metadata
+- Reverse DNS records
+- Traceroute observations
+- Router addresses
+- Geographic information where available
+- Source-feed provenance
+- Malware-family labels
+- Prefix and ASN relationships
+
+```text
+              Raw IOC Feeds
+                    |
+                    v
+             Normalize IOCs
+                    |
+                    v
+            Background Enrichment
+                    |
+       +------------+------------+
+       |            |            |
+       v            v            v
+      BGP          RDNS        Traces
+       |            |            |
+       +------------+------------+
+                    |
+                    v
+             Local Intelligence
+                 Database
+                    |
+                    v
+             SQL Investigation
+```
+
+The architecture separates collection from investigation, allowing existing enrichment data to be explored without repeatedly querying every upstream source.
+
+---
+
+## 3. Multi-Vantage Multipath Traceroutes
+
+A central feature of Waypoint is the ability to compare observed routing paths from different vantage points.
+
+Traceroutes collected from separate environments can reveal different visible portions of a destination's network path. Comparing them can expose shared routers, different upstream providers, ASN transitions, and convergence points.
+
+The platform can compare observations from environments such as a local Windows host and a remote Linux or cloud-based vantage point.
+
+### Example: Comparing vantage points
+
+```text
+Vantage A
+   |
+   v
+AS15169 - Google
+   |
+   v
+AS196844 - PIONIER
+   |
+   v
+AS29414 - Destination Network
+   |
+   v
+Target IOC
+```
+
+```text
+Vantage B
+   |
+   v
+AS1299 - Arelion
+   |
+   v
+AS13293 - Observed Transit
+   |
+   v
+Shared Observed Routers
+   |
+   v
+Target Network
+```
+
+These examples illustrate why one traceroute should not be treated as a complete description of a destination's network environment.
+
+### Capabilities
+
+- Compare routes collected from different vantage points
+- Track responding routers and observed hops
+- Associate hops with ASN and BGP information where available
+- Enrich routers with reverse DNS and geographic data
+- Identify ASN transitions
+- Highlight routers observed by multiple vantage points
+- Compare protocol-specific probes
+- Display round-trip time and RTT changes
+- Identify unresponsive hops and incomplete paths
+- Investigate upstream, lateral, and downstream infrastructure candidates
+
+Traceroutes show the responding network interfaces visible to a particular probe. They do not necessarily reveal every router, the physical Internet path, or a definitive bidirectional route.
+
+---
+
+## 4. Infrastructure Graph & Relationship Discovery
+
+Waypoint transforms collected and derived relationships into an interactive infrastructure investigation environment.
+
+Graph relationships can connect:
+
+```text
+IOC
+ |
+ +---- IP Address
+ |       |
+ |       +---- BGP Prefix
+ |       |
+ |       +---- ASN
+ |       |
+ |       +---- Reverse DNS
+ |       |
+ |       +---- Observed Router
+ |
+ +---- Source Feed
+ |
+ +---- Malware Family
+ |
+ +---- Traceroute
+         |
+         +---- Hop
+         |
+         +---- ASN Transition
+         |
+         +---- Shared Router
+```
+
+Investigators can move between an IOC, its routing environment, related network entities, and the evidence supporting each relationship.
+
+### Infrastructure pivots
+
+Potential investigative pivots include:
+
+- IP address to ASN
+- IP address to BGP prefix
+- IP address to PTR hostname
+- Router to observed routing paths
+- ASN to associated indicators
+- Shared prefix to related IP addresses
+- IOC to source-feed provenance
+- Malware-family label to associated infrastructure
+- Multiple vantage points to shared routers
+- Infrastructure cluster to its constituent evidence
+
+The graph is designed to help generate and prioritize hypotheses, not to equate shared hosting or common transit with common malicious ownership.
+
+---
+
+## 5. Derived Infrastructure Clusters
+
+Waypoint identifies potential relationships across indicators using shared infrastructure characteristics.
+
+Cluster dimensions can include ASN, prefix, routing observations, malware-family labels, and other recorded relationships.
+
+Example results from the current dataset:
+
+| ASN | IOC count | Families observed | Confidence |
+|---|---:|---:|---|
+| AS14061 | 458 | 26 | HIGH |
+| AS16276 | 288 | 27 | HIGH |
+| AS5384 | 280 | 3 | HIGH |
+| AS2856 | 238 | 3 | HIGH |
+| AS45090 | 238 | 16 | HIGH |
+| AS577 | 224 | 2 | HIGH |
+
+*Illustrative results from the current dataset, not live measurements.*
+
+A cluster can expose infrastructure associated with several recorded malware-family labels, creating useful pivots for further investigation.
+
+### What clusters can reveal
+
+- Shared hosting or network providers
+- Repeated ASN associations across indicators
+- Infrastructure used by multiple recorded malware families
+- Candidate relationships between previously separate IOC groups
+- Network entities worth investigating for additional indicators
+- Historical changes in observed associations
+
+### Important distinction
+
+An ASN can host unrelated customers, benign services, compromised systems, and multiple unrelated malware operations.
+
+A shared ASN is not proof that two indicators belong to the same operator. Confidence labels are properties of the platform's derived scoring, not definitive attribution verdicts.
+
+---
+
+## 6. Fast-Flux Candidate Detection
+
+Waypoint analyzes hostname-to-IP diversity and infrastructure turnover to identify domains that may warrant fast-flux investigation.
+
+The current candidate scoring uses recorded infrastructure diversity and turnover evidence.
+
+Features include:
+
+- Number of observed IP addresses
+- Number of associated ASNs
+- Country diversity
+- Prefix diversity
+- Observation span
+- Observed IP turnover rate
+- Candidate score
+
+Example:
+
+| Hostname | IPs | ASNs | Countries | Candidate |
+|---|---:|---:|---:|---|
+| `bad2.yourironcore.com` | 324 | 145 | 48 | HIGH (0.98) |
+| `bad4.yourironcore.com` | 482 | 139 | 55 | HIGH (0.95) |
+| `dnsrecordsarepowerful.com` | 9 | 6 | 6 | HIGH (0.70) |
+| `spamhaushackers.at` | 7 | 5 | 6 | MED (0.65) |
+
+*Illustrative results from the current dataset.*
+
+### Detection rationale
+
+A hostname associated with a large and changing set of addresses across multiple ASNs, countries, and prefixes may deserve closer examination.
+
+Waypoint uses these characteristics to generate candidates for investigation.
+
+**TTL is not part of the current score**, because TTL information is not stored in the current passive-DNS dataset.
+
+High diversity is not by itself proof of fast-flux behavior. CDNs, hosting platforms, load balancing, and other legitimate architectures can produce similar patterns.
+
+---
+
+## 7. DGA-Like Hostname Candidates
+
+Waypoint identifies suspicious-looking hostnames using lexical and cardinality features.
+
+The current heuristic examines characteristics such as:
+
+- Character entropy
+- Digit proportion
+- Vowel proportion
+- Consonant-run patterns
+- Hostname length
+- IP cardinality
+
+Example:
+
+| Hostname | Score | Entropy | Length |
+|---|---:|---|---|
+| `145dg55ret4dgf52erfxcrty.shop` | 0.80 | HIGH | HIGH |
+| `wkflgf421076vhyu.com` | 0.80 | HIGH | HIGH |
+| `djfgl6gh4568xbh.com` | 0.75 | HIGH | MED |
+| `fnli29868czxyt2.com` | 0.75 | HIGH | MED |
+
+*Illustrative results from the current dataset.*
+
+### Current methodology
+
+The current scoring is based on lexical and cardinality heuristics over the collected hostname dataset.
+
+It does not currently use a dictionary model, an n-gram model, or TLD weighting.
+
+The resulting scores are candidate-ranking signals, not proof that a hostname was generated algorithmically or is malicious.
+
+---
+
+## 8. Infrastructure Gravity & ASN Intelligence
+
+Waypoint aggregates observed IOC routing paths to identify autonomous systems that appear frequently across the collected dataset.
+
+This creates an infrastructure-oriented view of the network entities traversed by or associated with many observed IOC paths.
+
+Example:
+
+| ASN | Network | IOC paths | Malware families | Routers |
+|---|---|---:|---:|---:|
+| AS15169 | Google | 11,725 | 92 | 1,395 |
+| AS1299 | Arelion | 3,573 | 81 | 991 |
+| AS3257 | GTT | 903 | 50 | 318 |
+| AS22773 | Cox Communications | 897 | 64 | 58 |
+| AS6461 | Zayo | 764 | 48 | 298 |
+| AS174 | Cogent | 746 | 35 | 554 |
+| AS6939 | Hurricane Electric | 656 | 45 | 343 |
+
+*Illustrative results from the current dataset.*
+
+These statistics can help investigators prioritize infrastructure pivots and understand which networks recur across the observed routing dataset.
+
+However, transit providers and large network operators carry traffic for many unrelated entities. A high path count does not imply that the ASN owner is malicious or directly involved in a campaign. But is helpful for elucidating downstream branch points.
+---
+
+## 9. SQL Threat Hunting Engine
+
+Waypoint includes a SQL REPL for directly querying the enriched intelligence dataset.
+
+Rather than relying entirely on predefined dashboards, investigators can formulate their own questions against the locally available records.
+
+### Example investigation questions
+
+- Do any upstream routers or ASNs also appear in another IOC's observed route?
+- Which ASNs occur most frequently across malware-associated routes?
+- Which prefixes contain multiple indicators from different feeds?
+- Which routers appear from multiple vantage points?
+- Which indicators have the largest number of related infrastructure entities?
+- Which fast-flux candidates overlap with known IOC records?
+- Which domains have high lexical scores and multiple associated IPs?
+- Which network relationships are supported by multiple independent observations?
+
+### Example SQL patterns
+
+The following are conceptual query patterns. Adapt table and column names to the current database schema.
+
+Find ASNs associated with multiple indicators:
+
+```sql
+SELECT
+    asn,
+    COUNT(DISTINCT ip) AS unique_iocs
+FROM bgp_asn
+GROUP BY asn
+HAVING COUNT(DISTINCT ip) > 1
+ORDER BY unique_iocs DESC;
+```
+
+Inspect repeated router observations:
+
+```sql
+SELECT
+    router_ip,
+    COUNT(*) AS observations,
+    COUNT(DISTINCT vantage) AS vantage_points
+FROM traceroute_hops
+GROUP BY router_ip
+HAVING COUNT(DISTINCT vantage) > 1
+ORDER BY vantage_points DESC, observations DESC;
+```
+
+Find hostnames with high candidate scores:
+
+```sql
+SELECT
+    hostname,
+    candidate_score,
+    ip_count,
+    asn_count
+FROM fast_flux_candidates
+ORDER BY candidate_score DESC;
+```
+
+The SQL engine makes it possible to test hypotheses immediately without needing a new feature or a fresh external query for every question.
+
+---
+
+## 10. Evidence-Based Node Investigation
+
+Selecting a node opens a detail view that combines observed information with derived relationships.
+
+For an IP address, this can include:
+
+- Associated ASN and network holder
+- BGP prefix
+- Country or geographic enrichment
+- Indicator classification
+- Source-feed provenance
+- Malware-family associations
+- Observed traceroute paths
+- Router relationships
+- Derived infrastructure connections
+
+Example:
+
+```text
+IOC Detail
+
+Classification:
+    TrickBot-associated indicator
+
+ASN:
+    AS29414
+
+Network:
+    ASN-BIAMAN-COM
+
+BGP Prefix:
+    82.139.146.128 - 82.139.146.255
+
+Country:
+    PL
+
+Source:
+    
+```
+
+### Observed versus derived evidence
+
+Waypoint distinguishes directly recorded observations from correlations inferred by the platform.
+
+```text
+OBSERVED
+    An IOC feed lists the IP as associated with TrickBot.
+
+OBSERVED
+    BGP data associates the address with an ASN.
+
+OBSERVED
+    The address falls within an announced prefix.
+
+DERIVED
+    Related infrastructure candidates are identified
+    from recorded relationships.
+```
+
+This separation is essential when investigating shared infrastructure.
+
+A relationship may justify further investigation without establishing common ownership, operator identity, or campaign attribution.
+
+---
+
+## 11. Router Convergence & Route Comparison
+
+Multi-vantage analysis can reveal routers that appear in more than one observed path.
+
+When separate vantage points encounter the same responding router, that convergence becomes an additional investigative pivot.
+
+The interface can distinguish:
+
+- Observed routers
+- Unobserved segments
+- Convergence points
+- ASN transitions
+- RTT changes
+- Vantage origins
+- Incomplete traces
+
+Example:
+
+```text
+Vantage A --------------------+
+                              |
+                              v
+                       Shared Router
+                              |
+                              v
+                         Target Network
+                              ^
+                              |
+Vantage B --------------------+
+```
+
+### Why convergence matters
+
+Shared routers can help identify overlapping portions of observed routes and reveal additional infrastructure relationships worth investigating.
+
+Combined with ASN, PTR, and prefix enrichment, these observations may reveal network entities that do not appear in the original IOC feeds.
+
+Convergence is evidence of a shared observed router, not proof that the source indicators share an operator or campaign.
+
+---
+
+## 12. Offline Infrastructure Discovery
+
+One of Waypoint's central design goals is to enable discovery from already collected intelligence.
+
+Many intelligence workflows depend heavily on constant scanning, external lookups, and new feed ingestion.
+
+Waypoint can instead investigate the relationships already represented in its local dataset.
+
+```text
+             Existing IOC Dataset
+                      |
+                      v
+             Previously Collected
+              Network Evidence
+                      |
+                      v
+              Local Correlation
+                      |
+          +-----------+-----------+
+          |           |           |
+          v           v           v
+       Shared       Router      ASN / Prefix
+       Routers      Overlap      Relationships
+          |           |           |
+          +-----------+-----------+
+                      |
+                      v
+             New Candidate Leads
+```
+
+This supports repeatable investigations, offline analysis, and hypothesis testing without requiring every investigative pivot to initiate another network scan.
+
+The discovery process is bounded by the evidence available in the local dataset. Offline analysis can derive new candidate relationships from existing observations, but it cannot independently observe previously uncollected infrastructure without new evidence.
+
+---
+
+## 13. Malware Campaign Investigation Workflow
+
+Waypoint supports an investigation workflow that starts with an IOC and expands outward through the network infrastructure.
+
+```text
+Known Indicator
+      |
+      v
+Collect Existing Intelligence
+      |
+      v
+Enrich BGP / RDNS / ASN
+      |
+      v
+Inspect Existing Traceroutes
+      |
+      v
+Compare Multiple Vantage Points
+      |
+      v
+Identify Shared Routers & Networks
+      |
+      v
+Generate Infrastructure Candidates
+      |
+      v
+Query Related IOCs
+      |
+      v
+Review Evidence & Provenance
+      |
+      v
+Validate Campaign Hypotheses
+```
+
+The result is an iterative workflow in which each observed relationship can generate new investigative pivots.
+
+---
+
+## Future Development
+
+Potential extensions to the existing platform include:
+
+### Automated Domain Screenshots
+
+Integrate Selenium and a managed browser environment to capture screenshots of domains under investigation.
+
+Potential functionality:
+
+- Automated page rendering
+- Screenshot capture
+- Redirect-chain recording
+- Page-title and metadata extraction
+- Timestamped evidence
+- Domain-to-screenshot association
+- Visual comparison between domains
+
+Browser automation should run in an isolated environment with appropriate restrictions for untrusted content.
+
+### Maltego-Like Graph Export
+
+Provide interoperable exports for graph-oriented investigation tools.
+
+Potential formats and capabilities:
+
+- Node-and-edge JSON
+- CSV edge lists
+- GraphML
+- Relationship provenance
+- Confidence and evidence annotations
+- Exportable investigation subgraphs
+- Pivotable IOC and infrastructure entities
+
+### Additional Potential Extensions
+
+- Historical BGP change correlation
+- Time-based infrastructure relationship graphs
+- TLS certificate and certificate-transparency pivots
+- Domain-to-IP historical association analysis
+- Autonomous-system relationship visualization
+- Infrastructure change detection
+- Cluster evolution over time
+- Cross-source IOC deduplication
+- Investigation case exports
+- Automated candidate prioritization
+- Reproducible enrichment snapshots
+- Additional passive DNS and public intelligence sources
+- SIEM integration 
+
+These are proposed extensions and should not be interpreted as already implemented functionality.
+
+---
+
+# Designed For
+
+- Threat Intelligence Analysts
+- Threat Hunters
+- Malware Researchers
+- Incident Responders
+- Network Security Engineers
+- Infrastructure Investigators
+- Detection Engineers
+- Cybersecurity Researchers
+- Digital Forensics Analysts
+- Academic Security Research
+
+---
+
+# Research Philosophy
+
+Traditional IOC investigation often starts with a known indicator and stops when its direct enrichment is exhausted.
+
+Waypoint explores what happens when the investigation continues outward.
+
+> A known indicator is not the boundary of an investigation.
+>
+> It is the starting point.
+
+Infrastructure relationships can expose new candidates. Multi-vantage routing observations can reveal shared network entities. Local correlation can turn existing evidence into additional investigative leads.
+
+The objective is not to claim attribution from shared infrastructure.
+
+It is to discover relationships worth validating, preserve the evidence behind them, and help analysts investigate beyond the original feed.
+
+---
+
+# Responsible Interpretation
+
+Waypoint is an infrastructure intelligence and candidate-discovery platform.
+
+- Shared ASNs do not establish shared malicious ownership.
+- Shared hosting does not establish campaign attribution.
+- Traceroutes reveal responding hops, not a complete physical network path.
+- Fast-flux and DGA scores are heuristics, not verdicts.
+- Infrastructure clusters represent derived relationships that require validation.
+- Offline discovery is limited to the relationships supported by collected data.
+
+The platform is intended to prioritize investigation and generate evidence-backed hypotheses for further analysis.
+
+---
+
+# Long-Term Vision
+
+Waypoint aims to move threat intelligence beyond static indicators toward a continuously enriched, infrastructure-oriented investigation model.
+
+```text
+IOC Intelligence
+      |
+      v
+Network Infrastructure
+      |
+      v
+Routing Relationships
+      |
+      v
+Cross-Vantage Correlation
+      |
+      v
+Infrastructure Discovery
+      |
+      v
+Campaign Hypotheses
+      |
+      v
+Evidence-Based Validation
+```
+
+**Don't just enrich the IOC. Investigate the infrastructure around it.**
+
+**Don't just consume threat feeds. Discover what their indicators connect to.**
+
+**Don't confuse correlation with attribution. Use infrastructure evidence to find the next question.**
+
+---
 
 # Binary Atlas
 
